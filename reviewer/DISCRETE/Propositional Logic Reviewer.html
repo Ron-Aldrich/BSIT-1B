@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Propositional Logic Reviewer</title>
+<style>
+:root{--bg:#fafaf8;--fg:#1c1f26;--mut:#6b7280;--card:#fff;--line:#e5e7eb;--acc:#2f5bea;--accbg:#e8eefe;--ok:#15803d;--okbg:#dcfce7;--bad:#b91c1c;--badbg:#fee2e2;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14161b;--fg:#e8eaf0;--mut:#9aa1b0;--card:#1c1f27;--line:#2c303b;--acc:#7c9bff;--accbg:#232c4d;--ok:#4ade80;--okbg:#14301f;--bad:#f87171;--badbg:#3a1a1a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14161b;--fg:#e8eaf0;--mut:#9aa1b0;--card:#1c1f27;--line:#2c303b;--acc:#7c9bff;--accbg:#232c4d;--ok:#4ade80;--okbg:#14301f;--bad:#f87171;--badbg:#3a1a1a;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:760px;margin:0 auto;padding:0 18px 60px}
+header{display:flex;justify-content:space-between;align-items:center;padding:22px 0 8px}
+h1{font-size:clamp(1.5rem,5vw,2.1rem);margin:0;letter-spacing:-.02em}
+.sub{color:var(--mut);margin:2px 0 0}
+h2{font-size:1.3rem;margin:34px 0 8px;letter-spacing:-.01em}h3{font-size:1.02rem;margin:0 0 4px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.tg{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:6px 10px}
+nav{display:flex;gap:6px;overflow-x:auto;padding:12px 0;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;border-bottom:1px solid var(--line)}
+nav button{border:0;background:none;padding:8px 14px;border-radius:99px;white-space:nowrap;color:var(--mut)}
+nav button.on{background:var(--accbg);color:var(--acc);font-weight:600}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:12px 0}
+.def{border-left:3px solid var(--acc);padding:2px 0 2px 14px;margin:12px 0}
+.sym{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--acc);font-weight:700}
+table{border-collapse:collapse;margin:10px 0;font-variant-numeric:tabular-nums}
+th,td{border:1px solid var(--line);padding:6px 16px;text-align:center}th{background:var(--accbg)}
+td.T{color:var(--ok);font-weight:600}td.F{color:var(--bad);font-weight:600}
+.sc{overflow-x:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.ex{display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding:10px 0}
+.ex:last-child{border:0}.ex small{display:block;color:var(--mut)}
+.ans{font-size:.9rem;margin-top:4px}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:10px;padding:10px 18px;font-weight:600}
+.btn.g{background:var(--card);color:var(--fg);border:1px solid var(--line)}
+.fc{min-height:190px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:1.15rem;padding:26px;cursor:pointer;width:100%;border:1px solid var(--line);background:var(--card);border-radius:16px;transition:transform .25s}
+.fc.back{background:var(--accbg);border-color:var(--acc)}.fc:active{transform:scale(.99)}
+.row{display:flex;gap:10px;justify-content:center;align-items:center;margin:14px 0;flex-wrap:wrap}
+.hud{display:flex;justify-content:space-between;font-weight:600;margin:6px 0 10px}
+.bar{height:6px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc);width:100%}
+.opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px 14px;margin:8px 0}
+.opt:hover:not(:disabled){border-color:var(--acc)}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}.opt.no{background:var(--badbg);border-color:var(--bad)}
+.big{font-size:2.6rem;font-weight:800;text-align:center;margin:6px 0}.c{text-align:center}
+.fb{margin:10px 0;padding:10px 14px;border-radius:12px;background:var(--accbg)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}.opts .opt{margin:0;padding:8px 10px;font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="w">
+<header><div><h1>Propositional Logic</h1><p class="sub">A quick reviewer: learn, flip, play.</p></div><button class="tg" id="th" aria-label="Toggle theme">◐</button></header>
+<nav id="nav"><button data-t="learn" class="on">Basics</button><button data-t="conn">Connectives</button><button data-t="cond">Conditionals</button><button data-t="cards">Flashcards</button><button data-t="game">Quiz game</button></nav>
+
+<section id="learn" class="on">
+<h2>What is logic?</h2>
+<p>Logic is the study of reasoning: whether an argument is correct or not. It looks at how statements relate to each other, not at what any single statement is about. Propositional logic works at the level of whole sentences.</p>
+<div class="def"><b>Proposition</b>: a declarative sentence that is either true or false, but not both.</div>
+<p>Commands, questions, exclamations and open sentences (with unknown variables) are <b>not</b> propositions. Letters like <span class="sym">p, q, r, s</span> are <b>propositional variables</b>. In a truth table, <b>T</b> is a true proposition and <b>F</b> is a false one.</p>
+<h2>Try it: is it a proposition?</h2>
+<p class="sub">Tap a sentence to see the answer.</p>
+<div class="card" id="pl"></div>
+<h2>Compound propositions</h2>
+<p>Simple true-or-false sentences are basic propositions. Joining them with connectives builds <b>compound propositions</b>. A <b>truth table</b> lists the value of a proposition for every possible combination of its variables.</p>
+</section>
+
+<section id="conn">
+<h2>The five basic connectives</h2>
+<p>Notation: not <span class="sym">¬</span>, and <span class="sym">∧</span>, or <span class="sym">∨</span>, if–then <span class="sym">→</span>, if and only if <span class="sym">↔</span>. A sixth, exclusive or, is <span class="sym">⊕</span>.</p>
+<div id="tts"></div>
+<h2>Examples</h2>
+<div class="card"><h3>Negation</h3>“Michael’s PC runs Linux” becomes “Michael’s PC does <b>not</b> run Linux.”</div>
+<div class="card"><h3>Conjunction</h3>p: 7 is an integer (T). q: 5 is less than 3 (F). So p ∧ q = T ∧ F = <b>F</b>.</div>
+<div class="card"><h3>Disjunction</h3>p: 2 is an integer (T). q: 3 is greater than 5 (F). So p ∨ q = T ∨ F = <b>T</b>.<br>p: 2 is an odd integer (F). q: 5 is less than 3 (F). So p ∨ q = F ∨ F = <b>F</b>.</div>
+<div class="card"><h3>Inclusive vs. exclusive or</h3><b>Inclusive</b>: “Students who took calculus or computer science can take this class.” Both is fine.<br><b>Exclusive</b>: “…calculus or computer science, but not both.” Exactly one.</div>
+<h2>Practice</h2>
+<p>Build the truth table for each:</p>
+<div class="card">1. (p ∨ q) → (p ⊕ q)<br>2. (p ⊕ q) → (p ∧ q)<br>3. (p ∨ q) ⊕ (p ∧ q)<br>4. (¬p ∧ q) ↔ (p ∨ q)<br>5. (¬p ∨ q) → (p ↔ q)</div>
+</section>
+
+<section id="cond">
+<h2>Conditional: p → q</h2>
+<div class="def">“If p, then q.” It is false only when p is true and q is false. Here <b>p</b> is the hypothesis (antecedent, premise) and <b>q</b> is the conclusion (consequence).</div>
+<p>Example: p: Maria learns discrete mathematics. q: Maria will find a job. Then p → q reads “If Maria learns discrete mathematics, then she will find a job.”</p>
+<h2>Ways to say p → q</h2>
+<div class="grid" id="ways"></div>
+<h2>Converse, inverse, contrapositive</h2>
+<div class="sc"><table><tr><th>Name</th><th>Form</th><th>Same as p → q?</th></tr><tr><td>Converse</td><td>q → p</td><td>No</td></tr><tr><td>Inverse</td><td>¬p → ¬q</td><td>No</td></tr><tr><td>Contrapositive</td><td>¬q → ¬p</td><td class="T">Yes</td></tr></table></div>
+<p>Let p: You are good in Mathematics. q: You are good in Logic.</p>
+<div class="card"><b>Converse:</b> If you are good in Logic, then you are good in Mathematics.<br><b>Contrapositive:</b> If you are not good in Logic, then you are not good in Mathematics.<br><b>Inverse:</b> If you are not good in Mathematics, then you are not good in Logic.</div>
+<div class="card"><h3>Tricky wording</h3>“The home team wins whenever it is raining.” Let r: it is raining, w: the home team wins. The statement is <b>r → w</b>.<br><b>Converse:</b> If the home team wins, then it is raining.<br><b>Contrapositive:</b> If the home team does not win, then it is not raining.<br><b>Inverse:</b> If it is not raining, then the home team does not win.</div>
+<h2>Biconditional: p ↔ q</h2>
+<div class="def">“p if and only if q.” True when p and q have the <b>same</b> truth value, false otherwise. It has the same truth values as (p → q) ∧ (q → p).</div>
+<p>Also: “p is necessary and sufficient for q” and “if p then q, and conversely.” Example: “You can take the flight if and only if you buy a ticket.”</p>
+</section>
+
+<section id="cards">
+<h2>Flashcards</h2>
+<p class="sub">Tap the card to flip.</p>
+<div class="c sub" id="fcn"></div>
+<button class="fc" id="fc"></button>
+<div class="row"><button class="btn g" id="fp">Back</button><button class="btn g" id="fs">Shuffle</button><button class="btn" id="fn">Next</button></div>
+</section>
+
+<section id="game">
+<h2>Quiz runner</h2>
+<div id="gm"></div>
+</section>
+</div>
+<script>
+const $=s=>document.querySelector(s),E=(t,h)=>{const e=document.createElement(t);e.innerHTML=h;return e};
+// theme
+$("#th").onclick=()=>{const r=document.documentElement,d=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;r.dataset.theme=d?"light":"dark"};
+// tabs
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#nav button,section").forEach(x=>x.classList.remove("on"));b.classList.add("on");$("#"+b.dataset.t).classList.add("on");scrollTo(0,0)});
+// proposition practice
+[["Throw your garbage at the trash bins.",0,"It is a command (imperative)."],["Tuguegarao City is the capital of the province of Cagayan.",1,"A declarative statement, and it is true."],["a + b = c",0,"An open sentence: the value depends on a, b and c."],["The regional offices of region 02 are located in Carig Sur, Tuguegarao City.",1,"A declarative statement; it is either true or false."],["What is your height?",0,"It is a question (interrogative)."],["1 + 2 = 3",1,"A proposition. It is true."],["1 + 1 = 3",1,"A proposition. It is false, and that is fine: false statements still count."],["2x + 5 = 3",0,"An open sentence: it depends on x."],["When you listen, you learn something but when you talk, you don’t learn.",1,"A declarative statement, so it is a proposition (it is a conjunction-style claim)."],["Please mute your microphones when somebody is talking.",0,"It is a request (imperative)."]].forEach(([s,y,w])=>{const d=E("div",`<div><span>${s}</span><div class="ans" hidden><b class="${y?"sym":""}">${y?"Proposition.":"Not a proposition."}</b> ${w}</div></div><span class="sym">?</span>`);d.className="ex";d.style.cursor="pointer";d.onclick=()=>{d.querySelector(".ans").hidden=!d.querySelector(".ans").hidden};$("#pl").append(d)});
+// truth tables
+const R=[[1,1],[1,0],[0,1],[0,0]],f=v=>v?"T":"F",td=v=>`<td class="${f(v)}">${f(v)}</td>`;
+[["Negation: ¬p","True when p is false (the opposite value).","¬p",[[1],[0]],a=>!a],["Conjunction: p ∧ q","True only when both are true.","p ∧ q",R,(a,b)=>a&&b],["Disjunction: p ∨ q","False only when both are false (inclusive or).","p ∨ q",R,(a,b)=>a||b],["Exclusive or: p ⊕ q","True when exactly one is true.","p ⊕ q",R,(a,b)=>a!==b],["Conditional: p → q","False only when p is true and q is false.","p → q",R,(a,b)=>!a||b],["Biconditional: p ↔ q","True when p and q match.","p ↔ q",R,(a,b)=>a===b]].forEach(([t,d,h,rows,fn])=>{const bin=rows[0].length>1;$("#tts").appendChild(E("div",`<h3>${t}</h3><div>${d}</div><div class="sc"><table><tr><th>p</th>${bin?"<th>q</th>":""}<th>${h}</th></tr>${rows.map(r=>`<tr>${r.map(td).join("")}${td(fn(...r.map(Boolean)))}</tr>`).join("")}</table></div>`)).className="card"});
+// ways
+["“if p, then q”","“if p, q”","“p is sufficient for q”","“q if p”","“q when p”","“a necessary condition for p is q”","“q unless ¬p”","“p implies q”","“p only if q”","“a sufficient condition for q is p”","“q whenever p”","“q is necessary for p”","“q follows from p”"].forEach(w=>$("#ways").appendChild(E("div",w)).className="card");
+// flashcards
+const FC=[["What is a proposition?","A declarative sentence that is either true or false, but not both."],["Which sentences are NOT propositions?","Commands, questions, exclamations and open sentences like x + 2 = 5."],["¬p (negation)","“It is not the case that p.” It has the opposite truth value of p."],["p ∧ q is true when…","Both p and q are true. Otherwise false."],["p ∨ q is false when…","Both p and q are false. Otherwise true."],["p ⊕ q is true when…","Exactly one of p and q is true."],["p → q is false when…","p is true and q is false. Otherwise true."],["Hypothesis and conclusion","In p → q, p is the hypothesis (antecedent, premise) and q is the conclusion (consequence)."],["Converse of p → q","q → p"],["Inverse of p → q","¬p → ¬q"],["Contrapositive of p → q","¬q → ¬p. It always has the same truth value as p → q."],["“p only if q” means…","p → q"],["“q is necessary for p” means…","p → q"],["p ↔ q is true when…","p and q have the same truth value. It equals (p → q) ∧ (q → p)."]];
+let fi=0,fb=false,deck=[...FC];const fc=$("#fc");
+function sf(){fc.textContent=deck[fi][fb?1:0];fc.classList.toggle("back",fb);$("#fcn").textContent=`Card ${fi+1} of ${deck.length}`}
+fc.onclick=()=>{fb=!fb;sf()};$("#fn").onclick=()=>{fi=(fi+1)%deck.length;fb=false;sf()};$("#fp").onclick=()=>{fi=(fi-1+deck.length)%deck.length;fb=false;sf()};$("#fs").onclick=()=>{deck.sort(()=>Math.random()-.5);fi=0;fb=false;sf()};sf();
+// quiz game
+const Q=[["Which of these is a proposition?",["Close the door.","What time is it?","7 is a prime number.","x + 2 = 5"],2,"It is declarative and has a definite truth value (true)."],["When is p ∧ q true?",["Either is true","Both are true","Both are false","Exactly one is true"],1,"A conjunction needs both parts true."],["When is p ∨ q false?",["Both are false","One is false","Both are true","Never"],0,"A disjunction is false only when both are false."],["When is p → q false?",["p false, q true","p false, q false","p true, q false","p true, q true"],2,"A true hypothesis with a false conclusion breaks the promise."],["What is F → T?",["True","False","Undefined","Depends on q"],0,"A conditional is true whenever p is false."],["What is T ⊕ T?",["True","False","Both","Neither"],1,"Exclusive or needs exactly one true, so two trues give false."],["p ↔ q is true when…",["p is true","q is true","p and q match","p and q differ"],2,"Biconditional is true when both have the same truth value."],["The converse of p → q is…",["q → p","¬p → ¬q","¬q → ¬p","p → ¬q"],0,"Converse: swap hypothesis and conclusion."],["The inverse of p → q is…",["q → p","¬p → ¬q","¬q → ¬p","¬p → q"],1,"Inverse: negate both parts, keep the order."],["The contrapositive of p → q is…",["q → p","¬p → ¬q","¬q → ¬p","¬p → q"],2,"Swap and negate both. It is equivalent to p → q."],["Which is logically equivalent to p → q?",["Its converse","Its inverse","Its contrapositive","None of these"],2,"Only the contrapositive always matches."],["“p only if q” translates to…",["q → p","p → q","p ↔ q","¬p → q"],1,"“Only if” points to the necessary condition: p → q."],["“q is necessary for p” translates to…",["q → p","p → q","p ↔ q","p ∧ q"],1,"If p holds, q must hold: p → q."],["p: “The square of 4 is 2” (F). q: “One dozen is 24” (F). What is p ∨ q?",["True","False","Both","Cannot tell"],1,"F ∨ F = F."],["Negation of “Michael’s PC runs Linux”?",["Michael’s PC runs Windows","Michael’s PC does not run Linux","Linux runs Michael’s PC","Michael has no PC"],1,"Negation simply says “it is not the case that…”."],["Which equals p ↔ q?",["(p → q) ∧ (q → p)","(p → q) ∨ (q → p)","p ⊕ q","p ∧ ¬q"],0,"Both directions must hold."]];
+const sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+[[0,1,2,5,13,14],[3,4,6,7,8,9],[10,11,12,15]].forEach((a,l)=>a.forEach(i=>Q[i][4]=l));
+Q.push(["Which of these is NOT a proposition?",["The sky is blue.","Is it raining?","2 + 2 = 5","Manila is in the Philippines."],1,"A question is interrogative, so it has no truth value.",0],["Which symbol means “and”?",["∧","∨","→","¬"],0,"∧ is conjunction (and). ∨ is or.",0],["p: 7 is an integer (T). q: 5 is less than 3 (F). What is p ∧ q?",["True","False","Both","Cannot tell"],1,"T ∧ F = F.",1],["What is T → F?",["True","False","Undefined","Depends on q"],1,"The only false conditional: true hypothesis, false conclusion.",1],["What is F ↔ F?",["True","False","Undefined","Depends"],0,"Both have the same truth value, so the biconditional is true.",1],["“q unless ¬p” is the same as…",["p → q","q → p","p ↔ q","p ∧ q"],0,"If ¬p is false (p is true), then q must hold: p → q.",2],["“The home team wins whenever it is raining.” What is the contrapositive?",["If the home team does not win, it is not raining.","If it is raining, the home team does not win.","If the home team wins, it is raining.","If it is not raining, the home team does not win."],0,"Statement: raining → wins. Contrapositive: not wins → not raining.",2],["Which pair always has the same truth value?",["p → q and q → p","p → q and ¬q → ¬p","p → q and ¬p → ¬q","p ∧ q and p ∨ q"],1,"A conditional and its contrapositive are equivalent.",2],["p ⊕ q is equivalent to…",["(p ∨ q) ∧ ¬(p ∧ q)","p ∧ q","p ↔ q","p → q"],0,"“At least one, but not both” is exactly exclusive or.",2],["When p and q are both true, what is (p ∨ q) → (p ⊕ q)?",["True","False","Both","Undefined"],1,"p ∨ q is T but p ⊕ q is F, so T → F = F.",2]);
+const LVL=[{n:"Easy",e:"🌱",d:"Basics, slow gates",f:0,base:9,min:5.5,m:1},{n:"Medium",e:"🔥",d:"Connectives and conditionals, 1.5x points",f:1,base:7.5,min:4.5,m:1.5},{n:"Hard",e:"⚡",d:"Tricky wording, fast gates, 2x points",f:2,base:6,min:3.5,m:2},{n:"Mixed",e:"🎲",d:"10 random questions from all levels",f:null,base:7.5,min:4.5,m:1.25}];
+const G=$("#gm"),cv=document.createElement("canvas"),LN=["A","B","C"],COL=["#3b82f6","#f59e0b","#ec4899"];
+cv.style.cssText="width:100%;display:block;border-radius:16px;touch-action:none;background:#1e2a52";
+let S,raf,last;
+function start(){cancelAnimationFrame(raf);G.innerHTML=`<div class="card c"><div class="big">🏃</div><p>Run down the track! Every question has 3 answer lanes (A, B, C). Switch lanes to pick your answer: tap or drag on the track, use the ← → keys, or tap an answer. Hit the wrong gate and you crash and lose a life, but the run keeps going.</p><b>Choose a level</b><div class="opts" id="lv" style="grid-template-columns:repeat(2,1fr);margin-top:10px">${LVL.map((l,k)=>`<button class="opt" data-k="${k}"><b>${l.e} ${l.n}</b><br><small>${l.d}</small></button>`).join("")}</div></div>`;document.querySelectorAll("#lv .opt").forEach(b=>b.onclick=()=>run(+b.dataset.k))}
+function run(k){const L=LVL[k];S={L,q:sh(Q.filter(q=>L.f===null||q[4]===L.f)).slice(0,L.f===null?10:8),i:-1,sc:0,lv:3,st:0,best:0,ok:0,lane:1,px:1,p:0,t:0,fx:0,cr:0};
+G.innerHTML=`<div class="hud"><span id="hs"></span><span id="hl"></span><span id="hk"></span></div><div class="card" style="margin:6px 0"><b id="qn"></b><p id="qt" style="margin:4px 0 0"></p></div><div class="opts" id="oc"></div><div id="cvh"></div><div id="fb"></div>`;
+$("#cvh").append(cv);last=0;nextQ();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}
+function hud(){$("#hs").textContent="Score "+S.sc;$("#hl").textContent="❤️".repeat(S.lv)+"🤍".repeat(3-S.lv);$("#hk").textContent=S.st>1?"🔥 "+S.st:""}
+function nextQ(){S.i++;const q=S.q[S.i],r=q[1][q[2]];
+S.o=sh([r,...sh(q[1].filter((_,k)=>k!==q[2])).slice(0,2)]);S.c=S.o.indexOf(r);S.p=0;S.D=Math.max(S.L.min,S.L.base-S.i*.3);
+$("#qn").textContent=`Question ${S.i+1} of ${S.q.length}`;$("#qt").textContent=q[0];$("#oc").innerHTML="";
+S.o.forEach((x,k)=>{const b=E("button",`<b style="color:${COL[k]}">${LN[k]}</b> ${x}`);b.className="opt";b.onclick=()=>S.lane=k;$("#oc").append(b)});hud()}
+function hit(){const q=S.q[S.i],ok=S.lane===S.c;
+if(ok){S.st++;S.best=Math.max(S.best,S.st);S.ok++;const g=Math.round((100+(S.st-1)*25)*S.L.m);S.sc+=g;S.fx=.7;S.fc="34,197,94";S.pop="+"+g}
+else{S.st=0;S.lv--;S.fx=.8;S.fc="239,68,68";S.pop="Crash!";S.cr=.8}
+$("#fb").innerHTML=`<div class="fb"><b>${ok?"Nice run!":"Ouch, you crashed."}</b> ${ok?"":"Correct answer: <b>"+LN[S.c]+"</b>. "}${q[3]}</div>`;hud();
+if(S.lv<=0||S.i>=S.q.length-1){S.over=true;setTimeout(end,1500);return}nextQ()}
+function loop(t){const dt=Math.min(.05,(t-(last||t))/1000);last=t;
+if(!$("#game").classList.contains("on")){last=0}else draw(dt);raf=requestAnimationFrame(loop)}
+function draw(dt){const dpr=devicePixelRatio||1,W=cv.clientWidth,H=Math.round(Math.min(440,W*1.05));
+if(cv.width!==Math.round(W*dpr)||cv.height!==Math.round(H*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.height=H+"px"}
+const c=cv.getContext("2d");c.setTransform(dpr,0,0,dpr,0,0);
+if(!S.over){S.p+=dt/S.D;S.t+=dt*(2+S.i*.15)}
+S.px+=(S.lane-S.px)*Math.min(1,dt*12);
+if(S.p>=1&&!S.over)hit();
+const h0=H*.12,py=H*.84,hw=y=>W*.11+W*.39*((y-h0)/(H-h0));
+c.save();if(S.cr>0){S.cr-=dt;c.translate((Math.random()-.5)*10,(Math.random()-.5)*10)}
+const bg=c.createLinearGradient(0,0,0,H);bg.addColorStop(0,"#1e2a52");bg.addColorStop(1,"#3b4f9a");c.fillStyle=bg;c.fillRect(-12,-12,W+24,H+24);
+c.fillStyle="#262b3a";c.beginPath();c.moveTo(W/2-hw(h0),h0);c.lineTo(W/2+hw(h0),h0);c.lineTo(W/2+hw(H),H);c.lineTo(W/2-hw(H),H);c.fill();
+c.strokeStyle="rgba(255,255,255,.7)";c.lineWidth=3;for(const s of[-1,1]){c.beginPath();c.moveTo(W/2+s*hw(h0),h0);c.lineTo(W/2+s*hw(H),H);c.stroke()}
+c.strokeStyle="rgba(255,255,255,.4)";c.lineWidth=2;
+for(let i=0;i<12;i++){const z=((i+S.t)%12)/12,y=h0+(H-h0)*z*z,y2=y+4+40*z*z;for(const s of[-1/3,1/3]){c.beginPath();c.moveTo(W/2+s*hw(y),y);c.lineTo(W/2+s*hw(y2),y2);c.stroke()}}
+if(S.p<1){const y=h0+(py-h0)*Math.pow(S.p,1.5),lw=2*hw(y)/3,w=lw*.8,h=lw*.5;
+for(let k=0;k<3;k++){const x=W/2+(k-1)*lw;c.fillStyle=COL[k];c.beginPath();c.roundRect?c.roundRect(x-w/2,y-h,w,h,8):c.rect(x-w/2,y-h,w,h);c.fill();c.fillStyle="#fff";c.font=`bold ${Math.max(9,h*.6)}px system-ui`;c.textAlign="center";c.textBaseline="middle";c.fillText(LN[k],x,y-h/2)}}
+const px=W/2+(S.px-1)*2*hw(py)/3;c.font=`${Math.round(W*.11)}px system-ui`;c.textAlign="center";c.textBaseline="middle";c.fillText(S.cr>0?"💥":"🏃",px,py);
+if(S.fx>0){c.fillStyle=`rgba(${S.fc},${S.fx*.3})`;c.fillRect(-12,-12,W+24,H+24);c.fillStyle="#fff";c.font="bold 28px system-ui";c.fillText(S.pop,W/2,H*.45-(.8-S.fx)*40);S.fx-=dt}
+c.restore()}
+let dn=0;const mv=e=>{if(S&&dn)S.lane=Math.max(0,Math.min(2,Math.floor(e.offsetX/cv.clientWidth*3)))};
+cv.onpointerdown=e=>{dn=1;mv(e)};cv.onpointermove=mv;addEventListener("pointerup",()=>dn=0);
+addEventListener("keydown",e=>{if(!S||!$("#game").classList.contains("on"))return;const d={ArrowLeft:-1,ArrowRight:1,a:-1,d:1}[e.key];if(d){S.lane=Math.max(0,Math.min(2,S.lane+d));e.preventDefault()}});
+function end(){cancelAnimationFrame(raf);const r=S.lv<=0?"Crashed out. Review and retry!":S.ok>=S.q.length-1?"Logic master 🏆":S.ok>=S.q.length*.6?"Sharp runner ⭐":"Keep running 👍";
+G.innerHTML=`<div class="card c"><div class="big">${S.sc}</div><h3>${r}</h3><p>${S.L.e} ${S.L.n} level. Correct gates: ${S.ok} of ${S.q.length}. Best streak: ${S.best}.</p><button class="btn" id="ag">Run again</button></div>`;$("#ag").onclick=start}
+start();
+</script>
+</body>
+</html>

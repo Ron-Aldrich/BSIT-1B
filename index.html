@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BSIT-1B Class Schedule · 2nd Semester</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fafaf8;--card:#fff;--ink:#141414;--muted:#6b6f6b;--line:#e5e6e1;--acc:#2f7d4f;--tint:#eef6f1;--warn:#b7791f;
+ --f:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101211;--card:#171a18;--ink:#ededea;--muted:#8d948f;--line:#2a2e2b;--acc:#5fc08a;--tint:#1b2a22;--warn:#e0b14a}}
+:root[data-theme="dark"]{--bg:#101211;--card:#171a18;--ink:#ededea;--muted:#8d948f;--line:#2a2e2b;--acc:#5fc08a;--tint:#1b2a22;--warn:#e0b14a}
+*{box-sizing:border-box;margin:0}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{background:var(--bg);color:var(--ink);font-family:var(--f);line-height:1.5;min-height:100%;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px clamp(16px,4vw,40px)}
+.brand{font-weight:700;font-size:1.05rem;letter-spacing:-.01em}
+.brand small{display:block;font-weight:500;font-size:.8rem;color:var(--muted)}
+.burger{width:42px;height:42px;border-radius:10px;border:1px solid var(--line);background:transparent;display:grid;place-content:center;gap:5px;color:var(--ink)}
+.burger span{display:block;width:18px;height:2px;border-radius:2px;background:currentColor;transition:transform .25s,opacity .25s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .25s;z-index:40}
+.scrim.on{opacity:1;pointer-events:auto}
+nav{position:fixed;top:0;right:0;bottom:0;width:min(280px,84vw);background:var(--bg);border-left:1px solid var(--line);z-index:50;transform:translateX(100%);transition:transform .3s;padding:calc(env(safe-area-inset-top,0px) + 20px) 16px 20px;display:flex;flex-direction:column;gap:4px;visibility:hidden}
+nav.on{transform:none;visibility:visible}
+nav h2{font-size:.85rem;font-weight:600;color:var(--muted);margin:0 10px 8px}
+nav a{padding:12px 10px;border-radius:10px;text-decoration:none;color:var(--ink);font-weight:600}
+nav a[aria-current="page"]{background:var(--tint);color:var(--acc)}
+nav .theme{margin-top:auto;padding:11px;border-radius:10px;border:1px solid var(--line);background:transparent;font-weight:600}
+main{max-width:960px;margin:0 auto;padding:36px clamp(16px,4vw,40px) 56px}
+.view{display:none}.view.on{display:block}
+.hero{display:grid;gap:14px;margin-bottom:26px}
+.hero h1{font-size:clamp(1.9rem,6vw,2.8rem);line-height:1.1;letter-spacing:-.03em;font-weight:700}
+.status{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
+.dot.live{background:var(--acc);box-shadow:0 0 0 4px var(--tint)}
+.status b{display:block;font-weight:600}.status span{color:var(--muted);font-size:.9rem}
+.bar{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-bottom:18px}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:2px;scrollbar-width:none;flex:1 1 320px}
+.tab{flex:none;padding:8px 14px;border-radius:999px;border:1px solid transparent;background:transparent;font-weight:600;color:var(--muted)}
+.tab.today{color:var(--ink);border-color:var(--line)}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.seg{display:flex;border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;padding:6px 14px;font-weight:600;border-radius:999px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--tint);color:var(--acc)}
+.list{display:grid;gap:10px}
+.cls{display:grid;grid-template-columns:118px 1fr;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.cls.now{border-color:var(--acc);background:var(--tint)}
+.time{padding:14px 12px 14px 16px;display:flex;flex-direction:column;justify-content:center;font-weight:600;font-size:.92rem;line-height:1.3;font-variant-numeric:tabular-nums;border-right:1px solid var(--line)}
+.time i{font-style:normal;font-weight:500;font-size:.75rem;color:var(--muted)}
+.body{padding:14px 16px}
+.body h3{font-size:1rem;font-weight:600;line-height:1.35}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:var(--tint);color:var(--acc);border-radius:6px;padding:2px 9px;font-size:.8rem;font-weight:600}
+.chip.room{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.tag{font-size:.7rem;font-weight:700;background:var(--acc);color:var(--bg);border-radius:6px;padding:2px 7px;margin-left:8px;vertical-align:middle}
+.empty{border:1px dashed var(--line);border-radius:14px;padding:36px 18px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font-weight:600;margin-bottom:2px}
+.week{display:none;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;align-items:start}
+.week.on{display:grid}
+.col{border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;background:var(--card)}
+.col h4{font-size:.95rem;font-weight:700}
+.col.today{border-color:var(--acc)}
+.col.today h4::after{content:" · today";font-weight:500;color:var(--acc)}
+.mini{border-radius:8px;padding:8px 10px;background:var(--bg);font-size:.88rem}
+.mini b{display:block;font-weight:600;line-height:1.3}.mini span{color:var(--muted);font-size:.8rem}
+.note{margin-top:18px;color:var(--muted);font-size:.85rem}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.rv{display:grid;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:left;text-decoration:none;color:inherit;width:100%}
+a.rv:hover{border-color:var(--acc)}
+.rv h3{font-size:1rem;font-weight:600;line-height:1.35}
+.rv .code{color:var(--muted);font-size:.8rem;font-weight:600}
+.pill{justify-self:start;margin-top:4px;font-size:.78rem;font-weight:600;border-radius:999px;padding:2px 10px;border:1px solid var(--line);color:var(--warn)}
+.pill.ok{color:var(--acc);border-color:var(--acc);background:var(--tint)}
+footer{text-align:center;color:var(--muted);font-size:.8rem;padding:0 16px 28px}
+@media (max-width:420px){.cls{grid-template-columns:100px 1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">BSIT-1B<small>2nd Semester · Class Schedule</small></div>
+  <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+</header>
+<div class="scrim" id="scrim"></div>
+<nav id="menu" aria-label="Main menu">
+  <h2>Menu</h2>
+  <a href="#schedule" data-v="schedule"> Schedule</a>
+  <a href="#reviewer" data-v="reviewer"> Reviewer</a>
+  <button class="theme" id="theme">🌓 Switch light / dark</button>
+</nav>
+
+<main>
+  <section class="view" id="v-schedule">
+    <div class="hero">
+      <h1>Our week at a glance</h1>
+      <div class="status"><span class="dot" id="dot"></span><div><b id="st1">Loading…</b><span id="st2"></span></div></div>
+    </div>
+    <div class="bar">
+      <div class="tabs" id="tabs" role="tablist" aria-label="Days"></div>
+      <div class="seg" role="group" aria-label="View"><button id="bDay" aria-pressed="true">Day</button><button id="bWeek" aria-pressed="false">Whole week</button></div>
+    </div>
+    <div class="list" id="list"></div>
+    <div class="week" id="week"></div>
+    <p class="note">Monday’s Art Appreciation is at 5:30 PM – 7:00 PM. Times are shown in 12-hour format.</p>
+  </section>
+
+  <section class="view" id="v-reviewer">
+    <div class="hero">
+      <h1>Reviewer</h1>
+      <p style="color:var(--muted)">Midterm reviewers will be added here, one per subject.</p>
+    </div>
+    <div class="rgrid" id="rgrid"></div>
+  </section>
+</main>
+<footer>BSIT-1B · 2nd Semester</footer>
+
+<script>
+(function(){
+  // s/e = start/end hour (24h decimal). t = time label shown to students.
+  var D=[
+   {n:"Monday",c:[
+    {s:"Discrete Structures",k:"IT 123",r:"Room 103",a:7,b:8.5},
+    {s:"Introduction to Human-Computer Interaction",k:"IT 122",r:"Room 203",a:8.5,b:10},
+    {s:"Purposive Communication",k:"GEC 107",r:"Room 202",a:11.5,b:13},
+    {s:"Art Appreciation",k:"GEC 101",r:"Room 204",a:17.5,b:19}]},
+   {n:"Tuesday",c:[
+    {s:"Ethics / Etika",k:"GEC 106",r:"Room 102",a:7,b:8.5},
+    {s:"Computer Programming 2",k:"IT 121",r:"CLA",a:10,b:13},
+    {s:"Life and Work of Rizal",k:"GEC 105",r:"Room 101",a:14.5,b:16},
+    {s:"Science, Technology and Society",k:"GEC 103",r:"Room 205",a:17,b:19}]},
+   {n:"Wednesday",c:[]},
+   {n:"Thursday",c:[
+    {s:"Discrete Structures",k:"IT 123",r:"Room 103",a:7,b:8.5},
+    {s:"Introduction to Human-Computer Interaction",k:"IT 122",r:"Room 203",a:8.5,b:10},
+    {s:"Purposive Communication",k:"GEC 107",r:"Room 202",a:11.5,b:13},
+    {s:"Art Appreciation",k:"GEC 101",r:"Room 204",a:13,b:14.5},
+    {s:"Computer Programming 2",k:"IT 121",r:"L3",a:15,b:17}]},
+   {n:"Friday",c:[
+    {s:"Ethics / Etika",k:"GEC 106",r:"Room 102",a:7,b:8.5},
+    {s:"Physical Activity Towards Health and Fitness II",k:"PE 12",r:"FD",a:9,b:11},
+    {s:"Life and Work of Rizal",k:"GEC 105",r:"Room 101",a:14.5,b:16},
+    {s:"Science, Technology and Society",k:"GEC 103",r:"Room 205",a:17,b:19}]},
+   {n:"Saturday",c:[
+    {s:"ROTC / NSTP 2",k:"NSTP 2",r:"",a:7,b:10}]}
+  ];
+  // Reviewer links: paste the page path into href (e.g. "reviewer/HCI/index.html"). Empty href = "On progress".
+  var REV=[
+   {n:"Discrete Structures",k:"IT 123",href:"reviewer/DISCRETE/discrete.html"},
+   {n:"Introduction to Human-Computer Interaction",k:"IT 122",href:""},
+   {n:"Computer Programming 2",k:"IT 121",href:""},
+   {n:"Purposive Communication",k:"GEC 107",href:""},
+   {n:"Art Appreciation",k:"GEC 101",href:""},
+   {n:"Ethics / Etika",k:"GEC 106",href:""},
+   {n:"Life and Work of Rizal",k:"GEC 105",href:""},
+   {n:"Science, Technology and Society",k:"GEC 103",href:""},
+   {n:"Physical Activity Towards Health and Fitness II",k:"PE 12",href:""},
+   {n:"ROTC / NSTP 2",k:"NSTP 2",href:""}
+  ];
+
+  function $(i){return document.getElementById(i)}
+  function f(h){var H=Math.floor(h),m=Math.round((h-H)*60),p=H>=12?"PM":"AM",x=H%12||12;return x+":"+(m<10?"0":"")+m+" "+p}
+  function rng(c){return f(c.a)+" – "+f(c.b)}
+  var now=new Date(), today=(now.getDay()+6)%7, nowH=now.getHours()+now.getMinutes()/60;
+  var sel=today>5?0:today, mode="day";
+  var li=$("list"),wk=$("week"),tb=$("tabs");
+
+  function card(c,live){
+    var t=f(c.a).split(" "),u=f(c.b).split(" ");
+    return '<article class="cls'+(live?' now':'')+'"><div class="time"><span>'+t[0]+' '+t[1]+'</span><i>to</i><span>'+u[0]+' '+u[1]+'</span></div>'+
+      '<div class="body"><h3>'+c.s+(live?'<span class="tag">NOW</span>':'')+'</h3><div class="meta"><span class="chip">'+c.k+'</span>'+(c.r?'<span class="chip room">'+c.r+'</span>':'')+'</div></div></article>';
+  }
+  function isLive(d,c){return d===today&&nowH>=c.a&&nowH<c.b}
+
+  function drawTabs(){
+    tb.innerHTML=D.map(function(d,i){return '<button class="tab'+(i===today?' today':'')+'" role="tab" aria-selected="'+(i===sel)+'" data-i="'+i+'">'+d.n.slice(0,3)+'</button>'}).join("");
+  }
+  function drawDay(){
+    var d=D[sel];
+    li.innerHTML=d.c.length?d.c.map(function(c){return card(c,isLive(sel,c))}).join(""):
+      '<div class="empty"><b>No classes on '+d.n+'</b>Enjoy your free day.</div>';
+  }
+  function drawWeek(){
+    wk.innerHTML=D.map(function(d,i){
+      return '<div class="col'+(i===today?' today':'')+'"><h4>'+d.n+'</h4>'+(d.c.length?d.c.map(function(c){
+        return '<div class="mini"><b>'+c.s+'</b><span>'+rng(c)+' · '+c.k+(c.r?' · '+c.r:'')+'</span></div>'}).join(""):'<div class="mini"><span>No classes</span></div>')+'</div>'}).join("");
+  }
+  function status(){
+    var d=today,dot=$("dot"),a,n;
+    dot.className="dot";
+    if(d>5){$("st1").textContent="It’s Sunday — no classes";$("st2").textContent="Next up: Monday, "+f(D[0].c[0].a);return}
+    a=D[d].c.filter(function(c){return nowH>=c.a&&nowH<c.b})[0];
+    if(a){dot.className="dot live";$("st1").textContent="Now: "+a.s;$("st2").textContent=rng(a)+(a.r?" · "+a.r:"");return}
+    n=D[d].c.filter(function(c){return c.a>nowH})[0];
+    if(n){$("st1").textContent="Next: "+n.s;$("st2").textContent="Starts "+f(n.a)+(n.r?" · "+n.r:"");return}
+    $("st1").textContent=D[d].c.length?"Classes are done for today":"No classes today";
+    $("st2").textContent="Check the tabs below for other days.";
+  }
+  function setMode(m){
+    mode=m;
+    $("bDay").setAttribute("aria-pressed",m==="day");$("bWeek").setAttribute("aria-pressed",m==="week");
+    li.style.display=m==="day"?"":"none";tb.parentNode.style.display="";
+    tb.style.visibility=m==="day"?"visible":"hidden";
+    wk.classList.toggle("on",m==="week");
+  }
+  tb.addEventListener("click",function(e){var b=e.target.closest(".tab");if(!b)return;sel=+b.dataset.i;drawTabs();drawDay();setMode("day")});
+  $("bDay").onclick=function(){setMode("day")};
+  $("bWeek").onclick=function(){setMode("week")};
+
+  // Reviewer
+  $("rgrid").innerHTML=REV.map(function(r){
+    var inner='<span class="code">'+r.k+'</span><h3>'+r.n+'</h3>';
+    return r.href?'<a class="rv" href="'+r.href+'">'+inner+'<span class="pill ok">Open reviewer</span></a>'
+      :'<div class="rv">'+inner+'<span class="pill">On progress</span></div>';
+  }).join("");
+
+  // Menu + routing
+  var burger=$("burger"),menu=$("menu"),scrim=$("scrim");
+  function menuOpen(o){menu.classList.toggle("on",o);scrim.classList.toggle("on",o);burger.setAttribute("aria-expanded",o);burger.setAttribute("aria-label",o?"Close menu":"Open menu")}
+  burger.onclick=function(){menuOpen(burger.getAttribute("aria-expanded")!=="true")};
+  scrim.onclick=function(){menuOpen(false)};
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")menuOpen(false)});
+  function route(){
+    var v=location.hash==="#reviewer"?"reviewer":"schedule";
+    $("v-schedule").classList.toggle("on",v==="schedule");$("v-reviewer").classList.toggle("on",v==="reviewer");
+    [].forEach.call(menu.querySelectorAll("a"),function(a){if(a.dataset.v===v)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+    menuOpen(false);window.scrollTo(0,0);
+  }
+  window.addEventListener("hashchange",route);
+  menu.addEventListener("click",function(e){if(e.target.closest("a"))setTimeout(function(){menuOpen(false)},0)});
+  $("theme").onclick=function(){
+    var r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+    r.dataset.theme=dark?"light":"dark";
+  };
+
+  drawTabs();drawDay();drawWeek();status();setMode("day");route();
+})();
+</script>
+</body>
+</html>
