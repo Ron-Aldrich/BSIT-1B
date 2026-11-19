@@ -90,7 +90,7 @@
 <body>
 <div class="wrap">
 
-  <!-- BACK BUTTON: goes to the previous page; if there is none, goes to the main site -->
+  <!-- BACK BUTTON: always goes to the main page, Reviewer tab (no browser history involved) -->
   <a class="back" href="/index.html#reviewer" id="back">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     Back
@@ -122,16 +122,5 @@
   </ul>
 
 </div>
-
-<script>
-  // Back button: use browser history when possible, otherwise follow the href above.
-  document.getElementById('back').addEventListener('click', function (e) {
-    var sameSite = document.referrer && new URL(document.referrer).origin === location.origin;
-    if (sameSite && history.length > 1) {
-      e.preventDefault();
-      history.back();
-    }
-  });
-</script>
 </body>
 </html>

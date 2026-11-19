@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Propositional Logic Reviewer</title>
+<title>Truth Table</title>
 <style>
 :root{--bg:#fafaf8;--fg:#1c1f26;--mut:#6b7280;--card:#fff;--line:#e5e7eb;--acc:#2f5bea;--accbg:#e8eefe;--ok:#15803d;--okbg:#dcfce7;--bad:#b91c1c;--badbg:#fee2e2;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14161b;--fg:#e8eaf0;--mut:#9aa1b0;--card:#1c1f27;--line:#2c303b;--acc:#7c9bff;--accbg:#232c4d;--ok:#4ade80;--okbg:#14301f;--bad:#f87171;--badbg:#3a1a1a;color-scheme:dark}}
@@ -11,7 +11,11 @@
 *{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
 .w{max-width:760px;margin:0 auto;padding:0 18px 60px}
-header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:22px 0 8px}
+.bk{display:inline-flex;align-items:center;gap:6px;margin-top:18px;padding:8px 14px 8px 10px;border:1px solid var(--line);background:var(--card);border-radius:99px;color:var(--fg);text-decoration:none;font-weight:500;font-size:.95rem}
+.bk:hover{border-color:var(--acc);background:var(--accbg)}
+.bk:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.bk svg{width:18px;height:18px}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 0 8px}
 h1{font-size:clamp(1.5rem,5vw,2.1rem);margin:0;letter-spacing:-.02em}
 .sub{color:var(--mut);margin:2px 0 0}
 h2{font-size:1.3rem;margin:34px 0 8px;letter-spacing:-.01em}h3{font-size:1.02rem;margin:0 0 4px}
@@ -40,27 +44,18 @@ td.T{color:var(--ok);font-weight:600}td.F{color:var(--bad);font-weight:600}
 .fc.back{background:var(--accbg);border-color:var(--acc)}.fc:active{transform:scale(.99)}
 .row{display:flex;gap:10px;justify-content:center;align-items:center;margin:14px 0;flex-wrap:wrap}
 .hud{display:flex;justify-content:space-between;gap:8px;font-weight:600;margin:6px 0 10px;flex-wrap:wrap}
-.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc);width:100%;transition:width .25s linear,background .3s}
-.bar.low i{background:var(--bad)}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:10px}.bar i{display:block;height:100%;background:var(--acc);width:100%;transition:width .25s linear}
 .opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px 14px;margin:8px 0}
 .opt:hover:not(:disabled){border-color:var(--acc)}
 .opt:disabled{cursor:default}
-.opt.sel{background:var(--accbg);border-color:var(--acc);box-shadow:0 0 0 2px var(--acc) inset}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}
+.opt.no{border-color:var(--bad);background:var(--badbg)}
 .big{font-size:2.6rem;font-weight:800;text-align:center;margin:6px 0}.c{text-align:center}
 .fb{margin:10px 0;padding:10px 14px;border-radius:12px;background:var(--accbg)}
-.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}.opts .opt{margin:0;padding:10px 12px;font-size:.9rem;min-height:48px}
-.lv{grid-template-columns:repeat(2,1fr);margin-top:10px}
-.go{display:flex;align-items:center;gap:12px;margin:10px 0}
-.go .btn{flex:1;padding:14px 18px;font-size:1.05rem}
-.tm{font-variant-numeric:tabular-nums;font-weight:700;min-width:64px;text-align:right}
-.tmw{margin:8px 0 2px}
-.tip{font-size:.85rem;color:var(--mut);margin:2px 0 8px}
 @media (max-width:520px){
 .w{padding:0 12px 48px}
-.opts{grid-template-columns:1fr}.lv{grid-template-columns:1fr}
 .card{padding:14px}.fc{font-size:1.05rem;padding:20px;min-height:160px}
 th,td{padding:6px 10px}
-.go{position:sticky;bottom:calc(env(safe-area-inset-bottom,0px) + 8px);z-index:4;background:var(--bg);padding:8px 0}
 }
 @media (min-width:900px){.w{max-width:860px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -68,8 +63,10 @@ th,td{padding:6px 10px}
 </head>
 <body>
 <div class="w">
-<header><div><h1>Propositional Logic</h1><p class="sub">A quick reviewer: learn, flip, play.</p></div><button class="tg" id="th" aria-label="Toggle theme">◐</button></header>
-<nav id="nav"><button data-t="learn" class="on">Basics</button><button data-t="conn">Connectives</button><button data-t="cond">Conditionals</button><button data-t="cards">Flashcards</button><button data-t="game">Quiz game</button></nav>
+<!-- BACK BUTTON: change the href below to your main website or dashboard link -->
+<a class="bk" href="/reviewer/DISCRETE/selection.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Back</a>
+<header><div><h1>Truth Table</h1><p class="sub">A quick reviewer: learn, flip, quiz.</p></div><button class="tg" id="th" aria-label="Toggle theme">◐</button></header>
+<nav id="nav"><button data-t="learn" class="on">Basics</button><button data-t="conn">Connectives</button><button data-t="cond">Conditionals</button><button data-t="cards">Flashcards</button><button data-t="game">Quiz</button></nav>
 
 <section id="learn" class="on">
 <h2>What is logic?</h2>
@@ -122,7 +119,7 @@ th,td{padding:6px 10px}
 </section>
 
 <section id="game">
-<h2>Quiz runner</h2>
+<h2>Quiz</h2>
 <div id="gm"></div>
 </section>
 </div>
@@ -139,69 +136,70 @@ let fi=0,fb=false,deck=[...FC];const fc=$("#fc");
 function sf(){fc.textContent=deck[fi][fb?1:0];fc.classList.toggle("back",fb);$("#fcn").textContent=`Card ${fi+1} of ${deck.length}`}
 fc.onclick=()=>{fb=!fb;sf()};$("#fn").onclick=()=>{fi=(fi+1)%deck.length;fb=false;sf()};$("#fp").onclick=()=>{fi=(fi-1+deck.length)%deck.length;fb=false;sf()};$("#fs").onclick=()=>{deck.sort(()=>Math.random()-.5);fi=0;fb=false;sf()};sf();
 
-// ---------- Quiz runner ----------
-const Q=[["Which of these is a proposition?",["Close the door.","What time is it?","7 is a prime number.","x + 2 = 5"],2,"It is declarative and has a definite truth value (true)."],["When is p ∧ q true?",["Either is true","Both are true","Both are false","Exactly one is true"],1,"A conjunction needs both parts true."],["When is p ∨ q false?",["Both are false","One is false","Both are true","Never"],0,"A disjunction is false only when both are false."],["When is p → q false?",["p false, q true","p false, q false","p true, q false","p true, q true"],2,"A true hypothesis with a false conclusion breaks the promise."],["What is F → T?",["True","False","Undefined","Depends on q"],0,"A conditional is true whenever p is false."],["What is T ⊕ T?",["True","False","Both","Neither"],1,"Exclusive or needs exactly one true, so two trues give false."],["p ↔ q is true when…",["p is true","q is true","p and q match","p and q differ"],2,"Biconditional is true when both have the same truth value."],["The converse of p → q is…",["q → p","¬p → ¬q","¬q → ¬p","p → ¬q"],0,"Converse: swap hypothesis and conclusion."],["The inverse of p → q is…",["q → p","¬p → ¬q","¬q → ¬p","¬p → q"],1,"Inverse: negate both parts, keep the order."],["The contrapositive of p → q is…",["q → p","¬p → ¬q","¬q → ¬p","¬p → q"],2,"Swap and negate both. It is equivalent to p → q."],["Which is logically equivalent to p → q?",["Its converse","Its inverse","Its contrapositive","None of these"],2,"Only the contrapositive always matches."],["“p only if q” translates to…",["q → p","p → q","p ↔ q","¬p → q"],1,"“Only if” points to the necessary condition: p → q."],["“q is necessary for p” translates to…",["q → p","p → q","p ↔ q","p ∧ q"],1,"If p holds, q must hold: p → q."],["p: “The square of 4 is 2” (F). q: “One dozen is 24” (F). What is p ∨ q?",["True","False","Both","Cannot tell"],1,"F ∨ F = F."],["Negation of “Michael’s PC runs Linux”?",["Michael’s PC runs Windows","Michael’s PC does not run Linux","Linux runs Michael’s PC","Michael has no PC"],1,"Negation simply says “it is not the case that…”."],["Which equals p ↔ q?",["(p → q) ∧ (q → p)","(p → q) ∨ (q → p)","p ⊕ q","p ∧ ¬q"],0,"Both directions must hold."]];
+// ---------- Quiz ----------
+// Each question: [question, [options], index of correct option, explanation]
+const Q=[
+["Which of these is a proposition?",["Close the door.","What time is it?","7 is a prime number.","x + 2 = 5"],2,"It is a declarative sentence that is definitely true or false. The others are a command, a question and an open sentence."],
+["Which of these is NOT a proposition?",["The sky is blue.","Is it raining?","2 + 2 = 5","Manila is in the Philippines."],1,"A question has no truth value. A false statement like 2 + 2 = 5 is still a proposition."],
+["Is “1 + 1 = 3” a proposition?",["Yes, and it is false","Yes, and it is true","No, because it is false","No, because it is an open sentence"],0,"It is a declarative sentence with a definite truth value (false). False statements still count as propositions."],
+["When is p ∧ q true?",["Both p and q are true","Either p or q is true","Both p and q are false","Exactly one of p, q is true"],0,"A conjunction is true only when both parts are true."],
+["When is p ∨ q false?",["Both p and q are false","Only one of them is false","Both are true","Never"],0,"A disjunction is false only when both parts are false."],
+["When is p ⊕ q true?",["Exactly one of p, q is true","At least one is true, including both","Both are true","Both are false"],0,"Exclusive or is true when exactly one part is true. If both are true, it is false."],
+["When is p → q false?",["p true, q false","p false, q true","p false, q false","p true, q true"],0,"A conditional is false only when the hypothesis is true and the conclusion is false."],
+["What is F → T?",["True","False","Undefined","Depends on the context"],0,"A conditional is true whenever p is false."],
+["What is T ⊕ T?",["False","True","Undefined","Depends on p"],0,"Exclusive or needs exactly one true value. Two true values give false."],
+["What is F ↔ F?",["True","False","Undefined","Depends on p"],0,"Both sides have the same truth value, so the biconditional is true."],
+["When is p ↔ q true?",["When p and q have the same truth value","When p is true","When p and q have different truth values","When q is true"],0,"A biconditional is true when both sides match, either both true or both false."],
+["p: 7 is an integer (T). q: 5 is less than 3 (F). What is p ∧ q?",["False","True","Undefined","The same as p"],0,"T ∧ F = F."],
+["p: 2 is an integer (T). q: 3 is greater than 5 (F). What is p ∨ q?",["True","False","Undefined","The same as q"],0,"T ∨ F = T."],
+["“Students who took calculus or computer science can take this class.” Which kind of “or” is this?",["Inclusive or","Exclusive or","Conditional","Biconditional"],0,"A student who took both is also allowed, so it is an inclusive or."],
+["In p → q, what is p called?",["The hypothesis (antecedent)","The conclusion (consequence)","The converse","The contrapositive"],0,"In p → q, p is the hypothesis and q is the conclusion."],
+["What is the converse of p → q?",["q → p","¬p → ¬q","¬q → ¬p","p → ¬q"],0,"The converse swaps the hypothesis and the conclusion."],
+["What is the inverse of p → q?",["¬p → ¬q","q → p","¬q → ¬p","¬p → q"],0,"The inverse negates both parts and keeps the order."],
+["What is the contrapositive of p → q?",["¬q → ¬p","q → p","¬p → ¬q","¬p → q"],0,"The contrapositive swaps and negates both parts."],
+["Which statement always has the same truth value as p → q?",["Its contrapositive","Its converse","Its inverse","p ∧ q"],0,"A conditional and its contrapositive are logically equivalent. The converse and inverse are not."],
+["“p only if q” translates to…",["p → q","q → p","p ↔ q","¬p → q"],0,"“Only if” points to the necessary condition: p → q."],
+["“q is necessary for p” translates to…",["p → q","q → p","p ↔ q","p ∧ q"],0,"If p holds, then q must hold: p → q."],
+["“The home team wins whenever it is raining.” What is the contrapositive?",["If the home team does not win, then it is not raining.","If it is raining, then the home team does not win.","If the home team wins, then it is raining.","If it is not raining, then the home team does not win."],0,"The statement is r → w. Its contrapositive is ¬w → ¬r."],
+["Which expression has the same truth values as p ↔ q?",["(p → q) ∧ (q → p)","(p → q) ∨ (q → p)","p ⊕ q","p ∧ ¬q"],0,"A biconditional holds when the conditional is true in both directions."],
+["p = T and q = T. What is (p ∨ q) → (p ⊕ q)?",["False","True","Undefined","Depends on the order"],0,"p ∨ q = T, but p ⊕ q = F. So the result is T → F = F."],
+["p = T and q = F. What is (p ⊕ q) → (p ∧ q)?",["False","True","Undefined","Depends on the order"],0,"p ⊕ q = T and p ∧ q = F. So the result is T → F = F."],
+["p = F and q = T. What is (¬p ∧ q) ↔ (p ∨ q)?",["True","False","Undefined","Depends on the order"],0,"¬p ∧ q = T ∧ T = T, and p ∨ q = T. T ↔ T = T."],
+["p = T and q = F. What is (¬p ∨ q) → (p ↔ q)?",["True","False","Undefined","Depends on the order"],0,"¬p ∨ q = F ∨ F = F. A conditional with a false hypothesis is true."],
+["How many rows does a truth table need for 2 variables?",["4","2","3","8"],0,"Each variable has 2 possible values, so there are 2 × 2 = 4 combinations."],
+["How many rows does a truth table need for 3 variables?",["8","6","9","4"],0,"2 × 2 × 2 = 8 combinations of T and F."]
+];
 const sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
-[[0,1,2,5,13,14],[3,4,6,7,8,9],[10,11,12,15]].forEach((a,l)=>a.forEach(i=>Q[i][4]=l));
-Q.push(["Which of these is NOT a proposition?",["The sky is blue.","Is it raining?","2 + 2 = 5","Manila is in the Philippines."],1,"A question is interrogative, so it has no truth value.",0],["Which symbol means “and”?",["∧","∨","→","¬"],0,"∧ is conjunction (and). ∨ is or.",0],["p: 7 is an integer (T). q: 5 is less than 3 (F). What is p ∧ q?",["True","False","Both","Cannot tell"],1,"T ∧ F = F.",1],["What is T → F?",["True","False","Undefined","Depends on q"],1,"The only false conditional: true hypothesis, false conclusion.",1],["What is F ↔ F?",["True","False","Undefined","Depends"],0,"Both have the same truth value, so the biconditional is true.",1],["“q unless ¬p” is the same as…",["p → q","q → p","p ↔ q","p ∧ q"],0,"If ¬p is false (p is true), then q must hold: p → q.",2],["“The home team wins whenever it is raining.” What is the contrapositive?",["If the home team does not win, it is not raining.","If it is raining, the home team does not win.","If the home team wins, it is raining.","If it is not raining, the home team does not win."],0,"Statement: raining → wins. Contrapositive: not wins → not raining.",2],["Which pair always has the same truth value?",["p → q and q → p","p → q and ¬q → ¬p","p → q and ¬p → ¬q","p ∧ q and p ∨ q"],1,"A conditional and its contrapositive are equivalent.",2],["p ⊕ q is equivalent to…",["(p ∨ q) ∧ ¬(p ∧ q)","p ∧ q","p ↔ q","p → q"],0,"“At least one, but not both” is exactly exclusive or.",2],["When p and q are both true, what is (p ∨ q) → (p ⊕ q)?",["True","False","Both","Undefined"],1,"p ∨ q is T but p ⊕ q is F, so T → F = F.",2]);
-
-const TIME=60,GATE=.42; // seconds per question, gate distance while thinking
-const LVL=[{n:"Easy",e:"🌱",d:"Basics, 1x points",f:0,m:1},{n:"Medium",e:"🔥",d:"Connectives and conditionals, 1.5x points",f:1,m:1.5},{n:"Hard",e:"⚡",d:"Tricky wording, 2x points",f:2,m:2},{n:"Mixed",e:"🎲",d:"10 random questions from all levels",f:null,m:1.25}];
-const G=$("#gm"),cv=document.createElement("canvas"),LN=["A","B","C"],COL=["#3b82f6","#f59e0b","#ec4899"];
-cv.style.cssText="width:100%;display:block;border-radius:16px;touch-action:none;background:#1e2a52";
-let S,raf,last;
-const fmt=s=>{s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
-function start(){cancelAnimationFrame(raf);S=null;G.innerHTML=`<div class="card c"><div class="big">🏃</div><p>Each question has 3 answer lanes (A, B, C). Take your time: you get <b>1 minute per question</b>, and the runner waits for you. Pick a lane by tapping an answer or the track (or press 1, 2, 3 / ← →), then press <b>Submit &amp; Go</b> to dash through the gate. A wrong gate means a crash, but the run keeps going.</p><b>Choose a level</b><div class="opts lv" id="lv">${LVL.map((l,k)=>`<button class="opt" data-k="${k}"><b>${l.e} ${l.n}</b><br><small>${l.d}</small></button>`).join("")}</div></div>`;document.querySelectorAll("#lv .opt").forEach(b=>b.onclick=()=>run(+b.dataset.k))}
-function run(k){const L=LVL[k];S={L,q:sh(Q.filter(q=>L.f===null||q[4]===L.f)).slice(0,L.f===null?10:8),i:-1,sc:0,st:0,best:0,ok:0,sel:null,px:1,p:GATE,ph:"think",t:0,fx:0,cr:0,tl:TIME};
-G.innerHTML=`<div class="hud"><span id="hs"></span><span id="hk"></span></div><div class="card" style="margin:6px 0"><b id="qn"></b><p id="qt" style="margin:4px 0 0"></p></div><div class="opts" id="oc"></div><div class="tmw"><div class="bar" id="tb"><i></i></div></div><div class="go"><button class="btn" id="sb" disabled>Submit &amp; Go 🏃</button><span class="tm" id="tm">⏱ 1:00</span></div><p class="tip">No rush: the timer is just a limit. Submit as soon as you're ready. If time runs out, your current pick is submitted.</p><div id="cvh"></div><div id="fb"></div>`;
-$("#cvh").append(cv);$("#sb").onclick=submit;last=0;nextQ();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}
-function hud(){$("#hs").textContent="Score "+S.sc;$("#hk").textContent=S.st>1?"🔥 "+S.st:""}
-function pick(k){if(!S||S.ph!=="think"||S.over)return;S.sel=k;document.querySelectorAll("#oc .opt").forEach((b,i)=>b.classList.toggle("sel",i===k));$("#sb").disabled=false}
-function nextQ(){S.i++;const q=S.q[S.i],r=q[1][q[2]];
-S.o=sh([r,...sh(q[1].filter((_,k)=>k!==q[2])).slice(0,2)]);S.c=S.o.indexOf(r);S.p=GATE;S.ph="think";S.sel=null;S.tl=TIME;
-$("#qn").textContent=`Question ${S.i+1} of ${S.q.length}`;$("#qt").textContent=q[0];$("#oc").innerHTML="";
-S.o.forEach((x,k)=>{const b=E("button",`<b style="color:${COL[k]}">${LN[k]}</b> ${x}`);b.className="opt";b.onclick=()=>pick(k);$("#oc").append(b)});
-$("#sb").disabled=true;timerUI();hud()}
-function timerUI(){const t=$("#tm");if(!t)return;t.textContent="⏱ "+fmt(S.tl);const b=$("#tb");b.firstChild.style.width=Math.max(0,S.tl/TIME*100)+"%";b.classList.toggle("low",S.tl<=10)}
-function submit(){if(!S||S.ph!=="think"||S.over)return;S.ph="run";$("#sb").disabled=true;document.querySelectorAll("#oc .opt").forEach(b=>b.disabled=true);$("#fb").innerHTML=""}
-function hit(){const q=S.q[S.i],ok=S.sel===S.c;
-if(ok){S.st++;S.best=Math.max(S.best,S.st);S.ok++;const g=Math.round((100+(S.st-1)*25)*S.L.m);S.sc+=g;S.fx=.7;S.fc="34,197,94";S.pop="+"+g}
-else{S.st=0;S.fx=.8;S.fc="239,68,68";S.pop="Crash!";S.cr=.8}
-$("#fb").innerHTML=`<div class="fb"><b>${ok?"Nice run!":S.sel===null?"Time ran out.":"Ouch, you crashed."}</b> ${ok?"":"Correct answer: <b>"+LN[S.c]+"</b>. "}${q[3]}</div>`;hud();
-if(S.i>=S.q.length-1){S.over=true;setTimeout(end,1800);return}nextQ()}
-function loop(t){const dt=Math.min(.05,(t-(last||t))/1000);last=t;
-if(!$("#game").classList.contains("on")){last=0}else if(S)draw(dt);raf=requestAnimationFrame(loop)}
-function draw(dt){const dpr=devicePixelRatio||1,W=cv.clientWidth||300,H=Math.round(Math.max(220,Math.min(440,W*.95,innerHeight*.45)));
-if(cv.width!==Math.round(W*dpr)||cv.height!==Math.round(H*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.height=H+"px"}
-const c=cv.getContext("2d");c.setTransform(dpr,0,0,dpr,0,0);
-if(!S.over){
- if(S.ph==="think"){S.t+=dt*.6;S.tl-=dt;if(S.tl<=0){S.tl=0;timerUI();submit()}else timerUI()}
- else{S.t+=dt*(3+S.i*.15);S.p+=dt*(1-GATE)/1.3}
+const G=$("#gm");let qz;
+function qStart(list){
+  qz={q:sh(list).map(([t,o,c,e])=>{const r=o[c],n=sh(o);return{t,o:n,c:n.indexOf(r),e,src:[t,o,c,e]}}),i:0,ok:0,miss:[]};
+  qShow();
 }
-S.px+=((S.sel===null?1:S.sel)-S.px)*Math.min(1,dt*12);
-if(S.p>=1&&!S.over)hit();
-const h0=H*.12,py=H*.84,hw=y=>W*.11+W*.39*((y-h0)/(H-h0));
-c.save();if(S.cr>0){S.cr-=dt;c.translate((Math.random()-.5)*10,(Math.random()-.5)*10)}
-const bg=c.createLinearGradient(0,0,0,H);bg.addColorStop(0,"#1e2a52");bg.addColorStop(1,"#3b4f9a");c.fillStyle=bg;c.fillRect(-12,-12,W+24,H+24);
-c.fillStyle="#262b3a";c.beginPath();c.moveTo(W/2-hw(h0),h0);c.lineTo(W/2+hw(h0),h0);c.lineTo(W/2+hw(H),H);c.lineTo(W/2-hw(H),H);c.fill();
-c.strokeStyle="rgba(255,255,255,.7)";c.lineWidth=3;for(const s of[-1,1]){c.beginPath();c.moveTo(W/2+s*hw(h0),h0);c.lineTo(W/2+s*hw(H),H);c.stroke()}
-c.strokeStyle="rgba(255,255,255,.4)";c.lineWidth=2;
-for(let i=0;i<12;i++){const z=((i+S.t)%12)/12,y=h0+(H-h0)*z*z,y2=y+4+40*z*z;for(const s of[-1/3,1/3]){c.beginPath();c.moveTo(W/2+s*hw(y),y);c.lineTo(W/2+s*hw(y2),y2);c.stroke()}}
-if(S.p<1){const y=h0+(py-h0)*Math.pow(S.p,1.5),lw=2*hw(y)/3,w=lw*.8,h=lw*.5;
-for(let k=0;k<3;k++){const x=W/2+(k-1)*lw;c.fillStyle=COL[k];c.globalAlpha=S.sel===null||S.sel===k?1:.55;c.beginPath();c.roundRect?c.roundRect(x-w/2,y-h,w,h,8):c.rect(x-w/2,y-h,w,h);c.fill();c.globalAlpha=1;c.fillStyle="#fff";c.font=`bold ${Math.max(11,h*.6)}px system-ui`;c.textAlign="center";c.textBaseline="middle";c.fillText(LN[k],x,y-h/2)}}
-const px=W/2+(S.px-1)*2*hw(py)/3;c.font=`${Math.round(Math.max(28,W*.11))}px system-ui`;c.textAlign="center";c.textBaseline="middle";c.fillText(S.cr>0?"💥":"🏃",px,py);
-if(S.fx>0){c.fillStyle=`rgba(${S.fc},${S.fx*.3})`;c.fillRect(-12,-12,W+24,H+24);c.fillStyle="#fff";c.font="bold 28px system-ui";c.fillText(S.pop,W/2,H*.45-(.8-S.fx)*40);S.fx-=dt}
-c.restore()}
-let dn=0;const mv=e=>{if(S&&dn&&S.ph==="think"&&!S.over)pick(Math.max(0,Math.min(2,Math.floor(e.offsetX/cv.clientWidth*3))))};
-cv.onpointerdown=e=>{dn=1;mv(e)};cv.onpointermove=mv;addEventListener("pointerup",()=>dn=0);addEventListener("pointercancel",()=>dn=0);
-addEventListener("keydown",e=>{if(!S||!$("#game").classList.contains("on")||S.over)return;
- const d={ArrowLeft:-1,ArrowRight:1,a:-1,d:1}[e.key];
- if(d){pick(Math.max(0,Math.min(2,(S.sel===null?1:S.sel)+d)));e.preventDefault();return}
- if(["1","2","3"].includes(e.key)){pick(+e.key-1);return}
- if(e.key==="Enter"&&S.sel!==null&&e.target.tagName!=="BUTTON"){submit();e.preventDefault()}});
-function end(){cancelAnimationFrame(raf);const r=S.ok>=S.q.length-1?"Logic master 🏆":S.ok>=S.q.length*.6?"Sharp runner ⭐":"Keep running 👍";
-G.innerHTML=`<div class="card c"><div class="big">${S.sc}</div><h3>${r}</h3><p>${S.L.e} ${S.L.n} level. Correct gates: ${S.ok} of ${S.q.length}. Best streak: ${S.best}.</p><button class="btn" id="ag">Run again</button></div>`;$("#ag").onclick=start}
-start();
+function qShow(){
+  const q=qz.q[qz.i],n=qz.q.length;
+  G.innerHTML=`<div class="hud"><span>Question ${qz.i+1} of ${n}</span><span id="qs">Score ${qz.ok}</span></div><div class="bar"><i style="width:${qz.i/n*100}%"></i></div><div class="card"><b id="qt"></b></div><div id="oc"></div><div id="fb"></div><div class="row"><button class="btn" id="nx" hidden></button></div>`;
+  $("#qt").textContent=q.t;
+  q.o.forEach((x,k)=>{const b=document.createElement("button");b.className="opt";b.textContent=x;b.onclick=()=>qAns(k);$("#oc").append(b)});
+  $("#nx").textContent=qz.i===n-1?"See results":"Next";
+  $("#nx").onclick=()=>{if(qz.i===n-1)qEnd();else{qz.i++;qShow();scrollTo(0,0)}};
+}
+function qAns(k){
+  const q=qz.q[qz.i];if(q.done)return;q.done=true;
+  const ok=k===q.c;
+  document.querySelectorAll("#oc .opt").forEach((b,i)=>{b.disabled=true;if(i===q.c)b.classList.add("ok");else if(i===k)b.classList.add("no")});
+  if(ok)qz.ok++;else qz.miss.push(q);
+  $("#qs").textContent="Score "+qz.ok;
+  $("#fb").innerHTML=`<div class="fb"><b>${ok?"Correct.":"Not quite."}</b> ${q.e}</div>`;
+  $("#nx").hidden=false;
+}
+function qEnd(){
+  const n=qz.q.length,p=Math.round(qz.ok/n*100),m=qz.miss;
+  G.innerHTML=`<div class="card c"><div class="big">${qz.ok} / ${n}</div><p>${p}%</p><div class="row"><button class="btn" id="qa">Retake quiz</button>${m.length?'<button class="btn g" id="qm">Retry missed</button>':''}</div></div>`+(m.length?`<h3 style="margin:18px 0 6px">Review your misses</h3>`+m.map(q=>`<div class="card"><b>${q.t}</b><div class="ans">Answer: <b>${q.o[q.c]}</b></div><div class="ans">${q.e}</div></div>`).join(""):`<div class="fb c">Perfect score. Nothing to review.</div>`);
+  $("#qa").onclick=()=>qStart(Q);
+  if(m.length)$("#qm").onclick=()=>qStart(m.map(q=>q.src));
+  scrollTo(0,0);
+}
+qStart(Q);
 </script>
 </body>
 </html>
