@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ethics Reviewer</title>
+<style>
+:root{--bg:#fafaf8;--fg:#1c1f26;--mut:#6b7280;--card:#fff;--line:#e5e7eb;--acc:#2f5bea;--accbg:#e8eefe;--ok:#15803d;--okbg:#dcfce7;--bad:#b91c1c;--badbg:#fee2e2;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14161b;--fg:#e8eaf0;--mut:#9aa1b0;--card:#1c1f27;--line:#2c303b;--acc:#7c9bff;--accbg:#232c4d;--ok:#4ade80;--okbg:#14301f;--bad:#f87171;--badbg:#3a1a1a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14161b;--fg:#e8eaf0;--mut:#9aa1b0;--card:#1c1f27;--line:#2c303b;--acc:#7c9bff;--accbg:#232c4d;--ok:#4ade80;--okbg:#14301f;--bad:#f87171;--badbg:#3a1a1a;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
+.w{max-width:760px;margin:0 auto;padding:0 18px 60px}
+.bk{display:inline-flex;align-items:center;gap:6px;margin-top:18px;padding:8px 14px 8px 10px;border:1px solid var(--line);background:var(--card);border-radius:99px;color:var(--fg);text-decoration:none;font-weight:500;font-size:.95rem}
+.bk:hover{border-color:var(--acc);background:var(--accbg)}
+.bk:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.bk svg{width:18px;height:18px}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 0 8px}
+h1{font-size:clamp(1.5rem,5vw,2.1rem);margin:0;letter-spacing:-.02em}
+.sub{color:var(--mut);margin:2px 0 0}
+h2{font-size:1.3rem;margin:34px 0 8px;letter-spacing:-.01em}h3{font-size:1.02rem;margin:0 0 4px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.tg{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:6px 10px}
+nav{display:flex;gap:6px;overflow-x:auto;padding:12px 0;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;border-bottom:1px solid var(--line);-webkit-overflow-scrolling:touch}
+nav button{border:0;background:none;padding:8px 14px;border-radius:99px;white-space:nowrap;color:var(--mut)}
+nav button.on{background:var(--accbg);color:var(--acc);font-weight:600}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:12px 0}
+.def{border-left:3px solid var(--acc);padding:2px 0 2px 14px;margin:12px 0}
+.sym{color:var(--acc);font-weight:700}
+ul{margin:6px 0;padding-left:20px}li{margin:3px 0}
+table{border-collapse:collapse;margin:10px 0;width:100%}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}th{background:var(--accbg)}
+td:first-child{white-space:nowrap;font-weight:600}
+.sc{overflow-x:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:12px}.grid .card{margin:0}
+.ex{display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding:10px 0;cursor:pointer}
+.ex:last-child{border:0}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:10px;padding:10px 18px;font-weight:600}
+.btn.g{background:var(--card);color:var(--fg);border:1px solid var(--line)}
+.fc{min-height:190px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:1.15rem;padding:26px;width:100%;border:1px solid var(--line);background:var(--card);border-radius:16px}
+.fc.back{background:var(--accbg);border-color:var(--acc)}
+.row{display:flex;gap:10px;justify-content:center;align-items:center;margin:14px 0;flex-wrap:wrap}
+.hud{display:flex;justify-content:space-between;gap:8px;font-weight:600;margin:6px 0 10px;flex-wrap:wrap}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:10px}.bar i{display:block;height:100%;background:var(--acc);transition:width .25s linear}
+.opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px 14px;margin:8px 0}
+.opt:hover:not(:disabled){border-color:var(--acc)}.opt:disabled{cursor:default}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}.opt.no{border-color:var(--bad);background:var(--badbg)}
+.big{font-size:2.6rem;font-weight:800;text-align:center;margin:6px 0}.c{text-align:center}
+.fb{margin:10px 0;padding:10px 14px;border-radius:12px;background:var(--accbg)}.ans{font-size:.9rem;margin-top:4px}
+.note{font-size:.9rem;color:var(--mut)}
+@media (max-width:520px){.w{padding:0 12px 48px}.card{padding:14px}.fc{font-size:1.05rem;padding:20px;min-height:160px}th,td{padding:6px 8px}td:first-child{white-space:normal}}
+@media (min-width:900px){.w{max-width:860px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="w">
+<!-- BACK BUTTON: change the href below to your main website or dashboard link -->
+<a class="bk" href="/reviewer/ETHICS/selection.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Back</a>
+<header><div><h1>Ethics</h1><p class="sub">A quick reviewer: learn, flip, quiz.</p></div><button class="tg" id="th" aria-label="Toggle theme">&#9680;</button></header>
+<nav id="nav"><button data-t="ov" class="on">Overview</button><button data-t="vs">Ethics vs Morality</button><button data-t="dl">Dilemmas</button><button data-t="cards">Flashcards</button><button data-t="game">Quiz</button></nav>
+
+<section id="ov" class="on">
+<h2>Where the words come from</h2>
+<div class="grid">
+<div class="card"><h3>Ethics</h3>Comes from the Greek word <i>ethos</i>, which means &ldquo;custom.&rdquo;</div>
+<div class="card"><h3>Morality</h3>Comes from the Latin word <i>mos</i> or <i>moris</i>, which also means &ldquo;custom.&rdquo;</div>
+</div>
+<h2>What is ethics?</h2>
+<div class="def"><b>As a subject of study:</b> ethics is about determining the <b>grounds for the values</b> with particular and special significance to human life.</div>
+<div class="def"><b>As a science:</b> ethics is a <b>normative philosophical science</b>, a theoretical science of good and bad, or right and wrong.</div>
+<div class="def"><b>What it provides:</b> the <b>principles of the morality of human acts</b>.</div>
+<div class="card"><h3>In general</h3>Ethics is about the good things we should pursue and the bad things we should avoid, and about the right ways in which we could or should act versus the wrong ways of acting.</div>
+</section>
+
+<section id="vs">
+<h2>Difference between Ethics and Morality</h2>
+<div class="sc"><table>
+<tr><th></th><th>Ethics</th><th>Morality</th></tr>
+<tr><td>Approach</td><td>Reasoning involves</td><td>Adhere to what is described</td></tr>
+<tr><td>Rules</td><td>Beyond rules</td><td>Hard and fast rules</td></tr>
+<tr><td>Scope</td><td>Usually considered universal</td><td>Relative to society/culture</td></tr>
+<tr><td>Survival</td><td>For the survival of the society</td><td>For the survival of the individual</td></tr>
+</table></div>
+<p class="note">Memory hook: ethics asks why and reasons beyond the rules; morality follows the rules a society or person already holds.</p>
+</section>
+
+<section id="dl">
+<h2>Class dilemmas</h2>
+<div class="card"><h3>Sino ang pipiliin ko?</h3><b>Mahal ko</b> o <b>mahal ako</b>?</div>
+<div class="card"><h3>Who will you save?</h3>Your wife was diagnosed with a severe cancer, and the only thing that can save her is a surgery. Doing this will end your unborn child&rsquo;s life. Your wife is pleading with you to save your child. What will you do? Who will you save: your wife or the child in her womb?</div>
+<p class="note">There is no single answer to memorize. Ethics is about the reasoning behind your choice, so practice explaining the values you weighed and why.</p>
+</section>
+
+<section id="cards">
+<h2>Flashcards</h2>
+<p class="sub">Tap the card to flip.</p>
+<div class="c sub" id="fcn"></div>
+<button class="fc" id="fc"></button>
+<div class="row"><button class="btn g" id="fp">Back</button><button class="btn g" id="fs">Shuffle</button><button class="btn" id="fn">Next</button></div>
+</section>
+
+<section id="game"><h2>Quiz</h2><div id="gm"></div></section>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+$("#th").onclick=()=>{const r=document.documentElement,d=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;r.dataset.theme=d?"light":"dark"};
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#nav button,section").forEach(x=>x.classList.remove("on"));b.classList.add("on");$("#"+b.dataset.t).classList.add("on");scrollTo(0,0)});
+let FC=[
+["Where does “ethics” come from?","The Greek word “ethos,” meaning “custom.”"],
+["Where does “morality” come from?","The Latin word “mos” or “moris,” which also means “custom.”"],
+["Ethics as a subject is about…","Determining the grounds for the values with particular and special significance to human life."],
+["What kind of science is ethics?","A normative philosophical science: a theoretical science of good and bad, or right and wrong."],
+["What does ethics provide?","The principles of the morality of human acts."],
+["Ethics, generally speaking, is about…","The good we should pursue, the bad we should avoid, and the right and wrong ways of acting."],
+["Ethics: rules or reasoning?","Reasoning is involved, and it goes beyond rules."],
+["Morality: rules or reasoning?","Adhering to what is described, through hard and fast rules."],
+["Which is usually considered universal?","Ethics. Morality is relative to society or culture."],
+["Survival: ethics vs morality?","Ethics is for the survival of the society; morality is for the survival of the individual."]];
+let fi=0,fb=false;
+function fcShow(){$("#fc").textContent=FC[fi][fb?1:0];$("#fc").classList.toggle("back",fb);$("#fcn").textContent=(fi+1)+" / "+FC.length}
+$("#fc").onclick=()=>{fb=!fb;fcShow()};
+$("#fn").onclick=()=>{fi=(fi+1)%FC.length;fb=false;fcShow()};
+$("#fp").onclick=()=>{fi=(fi+FC.length-1)%FC.length;fb=false;fcShow()};
+$("#fs").onclick=()=>{FC=FC.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);fi=0;fb=false;fcShow()};
+fcShow();
+const Q=[
+["“Ethos,” the root of ethics, means…",["Custom","Law","Reason","Society"],0,"Ethics comes from the Greek “ethos,” meaning custom."],
+["Morality comes from the Latin word…",["Mos or moris","Ethos","Logos","Lex"],0,"“Mos” or “moris” also means custom."],
+["Ethics is described as a…",["Normative philosophical science","Descriptive social science","Natural science","Applied art"],0,"It is a theoretical science of good and bad, or right and wrong."],
+["Ethics provides the principles of the…",["Morality of human acts","Laws of the state","Customs of a group","History of values"],0,"Ethics provides the principles of the morality of human acts."],
+["Which is beyond rules and involves reasoning?",["Ethics","Morality","Both equally","Neither"],0,"Ethics goes beyond rules; morality follows hard and fast rules."],
+["Which follows hard and fast rules?",["Morality","Ethics","Neither","Both are flexible"],0,"Morality adheres to what is described through hard and fast rules."],
+["Which is usually considered universal?",["Ethics","Morality","Neither","Only customs"],0,"Ethics is usually considered universal."],
+["Which is relative to society or culture?",["Morality","Ethics","Both","Neither"],0,"Morality is relative to society or culture."],
+["Ethics is for the survival of the…",["Society","Individual","Family","Government"],0,"Ethics is for the survival of society."],
+["Morality is for the survival of the…",["Individual","Society","Nation","School"],0,"Morality is for the survival of the individual."]];
+const sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const G=$("#gm");let qz;
+function qStart(list){
+  qz={q:sh(list).map(([t,o,c,e])=>{const r=o[c],n=sh(o);return{t,o:n,c:n.indexOf(r),e,src:[t,o,c,e]}}),i:0,ok:0,miss:[]};
+  qShow();
+}
+function qShow(){
+  const q=qz.q[qz.i],n=qz.q.length;
+  G.innerHTML=`<div class="hud"><span>Question ${qz.i+1} of ${n}</span><span id="qs">Score ${qz.ok}</span></div><div class="bar"><i style="width:${qz.i/n*100}%"></i></div><div class="card"><b id="qt"></b></div><div id="oc"></div><div id="fb"></div><div class="row"><button class="btn" id="nx" hidden></button></div>`;
+  $("#qt").textContent=q.t;
+  q.o.forEach((x,k)=>{const b=document.createElement("button");b.className="opt";b.textContent=x;b.onclick=()=>qAns(k);$("#oc").append(b)});
+  $("#nx").textContent=qz.i===n-1?"See results":"Next";
+  $("#nx").onclick=()=>{if(qz.i===n-1)qEnd();else{qz.i++;qShow();scrollTo(0,0)}};
+}
+function qAns(k){
+  const q=qz.q[qz.i];if(q.done)return;q.done=true;
+  const ok=k===q.c;
+  document.querySelectorAll("#oc .opt").forEach((b,i)=>{b.disabled=true;if(i===q.c)b.classList.add("ok");else if(i===k)b.classList.add("no")});
+  if(ok)qz.ok++;else qz.miss.push(q);
+  $("#qs").textContent="Score "+qz.ok;
+  $("#fb").innerHTML=`<div class="fb"><b>${ok?"Correct.":"Not quite."}</b> ${q.e}</div>`;
+  $("#nx").hidden=false;
+}
+function qEnd(){
+  const n=qz.q.length,p=Math.round(qz.ok/n*100),m=qz.miss;
+  G.innerHTML=`<div class="card c"><div class="big">${qz.ok} / ${n}</div><p>${p}%</p><div class="row"><button class="btn" id="qa">Retake quiz</button>${m.length?'<button class="btn g" id="qm">Retry missed</button>':''}</div></div>`+(m.length?`<h3 style="margin:18px 0 6px">Review your misses</h3>`+m.map(q=>`<div class="card"><b>${q.t}</b><div class="ans">Answer: <b>${q.o[q.c]}</b></div><div class="ans">${q.e}</div></div>`).join(""):`<div class="fb c">Perfect score. Nothing to review.</div>`);
+  $("#qa").onclick=()=>qStart(Q);
+  if(m.length)$("#qm").onclick=()=>qStart(m.map(q=>q.src));
+  scrollTo(0,0);
+}
+qStart(Q);
+
+</script>
+</body>
+</html>
