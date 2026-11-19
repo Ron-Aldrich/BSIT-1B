@@ -285,7 +285,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:0 16px 28px}
   cal.addEventListener("keydown",function(e){if(e.key==="Enter")show(e)});
 
   // Reviewer
-  $("rgrid").innerHTML=REV.map(function(r){
+  $("rgrid").innerHTML=REV.slice().sort(function(a,b){return (b.href?1:0)-(a.href?1:0)}).map(function(r){
     var inner='<h3>'+r.n+'</h3>';
     return r.href?'<a class="rv" href="'+r.href+'">'+inner+'<span class="pill ok">Open reviewer</span></a>'
       :'<div class="rv">'+inner+'<span class="pill">On progress</span></div>';
