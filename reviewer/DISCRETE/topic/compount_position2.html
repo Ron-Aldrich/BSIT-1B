@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Construction of Truth Table</title>
+<style>
+:root{--bg:#fafaf8;--fg:#1c1f26;--mut:#6b7280;--card:#fff;--line:#e5e7eb;--acc:#2f5bea;--accbg:#e8eefe;--ok:#15803d;--okbg:#dcfce7;--bad:#b91c1c;--badbg:#fee2e2;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14161b;--fg:#e8eaf0;--mut:#9aa1b0;--card:#1c1f27;--line:#2c303b;--acc:#7c9bff;--accbg:#232c4d;--ok:#4ade80;--okbg:#14301f;--bad:#f87171;--badbg:#3a1a1a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14161b;--fg:#e8eaf0;--mut:#9aa1b0;--card:#1c1f27;--line:#2c303b;--acc:#7c9bff;--accbg:#232c4d;--ok:#4ade80;--okbg:#14301f;--bad:#f87171;--badbg:#3a1a1a;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
+.w{max-width:760px;margin:0 auto;padding:0 18px 60px}
+.bk{display:inline-flex;align-items:center;gap:6px;margin-top:18px;padding:8px 14px 8px 10px;border:1px solid var(--line);background:var(--card);border-radius:99px;color:var(--fg);text-decoration:none;font-weight:500;font-size:.95rem}
+.bk:hover{border-color:var(--acc);background:var(--accbg)}
+.bk:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.bk svg{width:18px;height:18px}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 0 8px}
+h1{font-size:clamp(1.5rem,5vw,2.1rem);margin:0;letter-spacing:-.02em}
+.sub{color:var(--mut);margin:2px 0 0}
+h2{font-size:1.3rem;margin:34px 0 8px;letter-spacing:-.01em}h3{font-size:1.02rem;margin:0 0 4px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.tg{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:6px 10px}
+nav{display:flex;gap:6px;overflow-x:auto;padding:12px 0;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;border-bottom:1px solid var(--line);-webkit-overflow-scrolling:touch}
+nav button{border:0;background:none;padding:8px 14px;border-radius:99px;white-space:nowrap;color:var(--mut)}
+nav button.on{background:var(--accbg);color:var(--acc);font-weight:600}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:12px 0}
+.def{border-left:3px solid var(--acc);padding:2px 0 2px 14px;margin:12px 0}
+.sym{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--acc);font-weight:700}
+table{border-collapse:collapse;margin:10px 0;font-variant-numeric:tabular-nums}
+th,td{border:1px solid var(--line);padding:6px 16px;text-align:center;white-space:nowrap}th{background:var(--accbg)}
+th.new{background:var(--acc);color:#fff}td.new{background:var(--accbg)}
+td.T{color:var(--ok);font-weight:600}td.F{color:var(--bad);font-weight:600}
+.sc{overflow-x:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:12px}
+.ans{font-size:.9rem;margin-top:4px}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:10px;padding:10px 18px;font-weight:600}
+.btn.g{background:var(--card);color:var(--fg);border:1px solid var(--line)}
+.btn.g.on{border-color:var(--acc);background:var(--accbg);color:var(--acc)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.fc{min-height:190px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:1.15rem;padding:26px;cursor:pointer;width:100%;border:1px solid var(--line);background:var(--card);border-radius:16px;transition:transform .25s}
+.fc.back{background:var(--accbg);border-color:var(--acc)}.fc:active{transform:scale(.99)}
+.row{display:flex;gap:10px;justify-content:center;align-items:center;margin:14px 0;flex-wrap:wrap}
+.hud{display:flex;justify-content:space-between;gap:8px;font-weight:600;margin:6px 0 10px;flex-wrap:wrap}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:10px}.bar i{display:block;height:100%;background:var(--acc);width:100%;transition:width .25s linear}
+.opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px 14px;margin:8px 0}
+.opt:hover:not(:disabled){border-color:var(--acc)}
+.opt:disabled{cursor:default}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}
+.opt.no{border-color:var(--bad);background:var(--badbg)}
+.big{font-size:2.6rem;font-weight:800;text-align:center;margin:6px 0}.c{text-align:center}
+.fb{margin:10px 0;padding:10px 14px;border-radius:12px;background:var(--accbg)}
+.expr{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1.05rem;font-weight:700;color:var(--acc)}
+ol.st{padding-left:20px;margin:6px 0}ol.st li{margin:6px 0}
+@media (max-width:520px){
+.w{padding:0 12px 48px}
+.card{padding:14px}.fc{font-size:1.05rem;padding:20px;min-height:160px}
+th,td{padding:6px 10px}
+}
+@media (min-width:900px){.w{max-width:860px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="w">
+<!-- BACK BUTTON: change the href below to your main website or dashboard link -->
+<a class="bk" href="/reviewer/DISCRETE/selection.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Back</a>
+<header><div><h1>Construction of Truth Table</h1><p class="sub">Part 2: build the table of a compound proposition, column by column.</p></div><button class="tg" id="th" aria-label="Toggle theme">◐</button></header>
+<nav id="nav"><button data-t="steps" class="on">Steps</button><button data-t="order">Order</button><button data-t="prob">Problems</button><button data-t="cards">Flashcards</button><button data-t="game">Quiz</button></nav>
+
+<section id="steps" class="on">
+<h2>How to build a truth table</h2>
+<p>A <b>truth table</b> of a compound proposition lists its truth value for every possible combination of truth values of its variables. You build it one small piece at a time.</p>
+<div class="card"><ol class="st">
+<li><b>Count the variables</b> (n). The table needs <b>2<sup>n</sup></b> rows.</li>
+<li><b>Fill the variable columns</b> using the pattern below.</li>
+<li><b>Add one column for each smaller part</b> of the expression. Work from the inside out: negations first, then the parts in parentheses.</li>
+<li><b>Fill each column</b> using the rule of its connective.</li>
+<li>The <b>last column</b> is the whole expression. Read it to see what kind of proposition it is.</li>
+</ol></div>
+<h2>How many rows?</h2>
+<div class="sc"><table><tr><th>Variables</th><th>Rows</th></tr><tr><td>1 (p)</td><td>2</td></tr><tr><td>2 (p, q)</td><td>4</td></tr><tr><td>3 (p, q, r)</td><td>8</td></tr><tr><td>4</td><td>16</td></tr></table></div>
+<h2>Filling the variable columns</h2>
+<p>The first variable is T for the first half of the rows and F for the second half. Each next variable uses blocks half as long. The last variable alternates T, F, T, F.</p>
+<div class="grid">
+<div class="card"><h3>2 variables (4 rows)</h3><div class="sc" id="pat2"></div><div class="ans">p: 2 T, 2 F. q: T, F, T, F.</div></div>
+<div class="card"><h3>3 variables (8 rows)</h3><div class="sc" id="pat3"></div><div class="ans">p: 4 T, 4 F. q: 2 T, 2 F, 2 T, 2 F. r: T, F alternating.</div></div>
+<div class="card"><h3>4 variables (16 rows)</h3><div class="sc" id="pat4"></div><div class="ans">p: 8 T, 8 F. q: 4 T, 4 F, 4 T, 4 F. r: 2 T, 2 F repeated. s: T, F alternating.</div></div>
+</div>
+<h2>Rules to remember</h2>
+<div id="rules" class="grid"></div>
+<div class="card"><h3>What do I solve first?</h3>Parentheses, then ¬, then ∧, ∨, →, ↔. See the <b>Order</b> tab for the full rule and many examples.</div>
+<h2>Reading the last column</h2>
+<div class="def"><b>Tautology</b>: every row is T.<br><b>Contradiction</b>: every row is F.<br><b>Contingency</b>: a mix of T and F.</div>
+</section>
+
+<section id="order">
+<h2>What to solve first</h2>
+<p>When an expression has several connectives, work in this order, from first to last:</p>
+<div class="card"><ol class="st">
+<li><b>Parentheses</b> ( ), innermost first</li>
+<li><b>Negation</b> <span class="sym">¬</span></li>
+<li><b>Conjunction</b> <span class="sym">∧</span></li>
+<li><b>Disjunction</b> <span class="sym">∨</span></li>
+<li><b>Conditional</b> <span class="sym">→</span></li>
+<li><b>Biconditional</b> <span class="sym">↔</span></li>
+</ol></div>
+<div class="def">Give every step its own column. The step you do first gets the column closest to the variables, and the last step is the final column.</div>
+<div class="card"><h3>Good to know</h3>
+<b>¬ only touches what is right after it.</b> ¬p ∧ q means (¬p) ∧ q. To negate a whole group, write ¬(p ∧ q).<br>
+<b>Chains like p → q → r</b> are unclear without parentheses, so always write them as (p → q) → r or p → (q → r).<br>
+<b>When in doubt,</b> add parentheses. A textbook or teacher may group differently, and parentheses always settle it.</div>
+<h2>Examples</h2>
+<p class="sub">Each example shows the order of the columns. Tap <b>Show table</b> to see the full table.</p>
+<div id="ord"></div>
+</section>
+
+<section id="prob">
+<h2>Worked problems</h2>
+<p class="sub">Pick a problem, then tap <b>Next column</b> to build it one column at a time.</p>
+<div class="row" id="psel"></div>
+<div class="card"><div class="expr" id="pexpr"></div></div>
+<div class="sc" id="ptab"></div>
+<div class="fb" id="pnote"></div>
+<div class="row"><button class="btn g" id="pp">Previous</button><button class="btn g" id="pa">Show all</button><button class="btn" id="pn">Next column</button></div>
+<div id="pres"></div>
+</section>
+
+<section id="cards">
+<h2>Flashcards</h2>
+<p class="sub">Tap the card to flip.</p>
+<div class="c sub" id="fcn"></div>
+<button class="fc" id="fc"></button>
+<div class="row"><button class="btn g" id="fp">Back</button><button class="btn g" id="fs">Shuffle</button><button class="btn" id="fn">Next</button></div>
+</section>
+
+<section id="game">
+<h2>Quiz</h2>
+<div id="gm"></div>
+</section>
+</div>
+<script>
+const $=s=>document.querySelector(s),E=(t,h)=>{const e=document.createElement(t);e.innerHTML=h;return e};
+$("#th").onclick=()=>{const r=document.documentElement,d=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;r.dataset.theme=d?"light":"dark"};
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#nav button,section").forEach(x=>x.classList.remove("on"));b.classList.add("on");$("#"+b.dataset.t).classList.add("on");scrollTo(0,0)});
+
+// ---------- helpers ----------
+const f=v=>v?"T":"F",td=(v,c="")=>`<td class="${f(v)} ${c}">${f(v)}</td>`;
+// rows(n): standard order, first row all T, last row all F
+const rows=(n,names)=>Array.from({length:2**n},(_,i)=>{const o={};names.forEach((k,j)=>o[k]=((i>>(n-1-j))&1)===0);return o});
+function tableHTML(vars,cols,k,hl){
+  const rs=rows(vars.length,vars),shown=cols.slice(0,k);
+  return `<table><tr>${vars.map(v=>`<th>${v}</th>`).join("")}${shown.map((c,i)=>`<th class="${hl&&i===k-1?"new":""}">${c.h}</th>`).join("")}</tr>`+
+  rs.map(r=>`<tr>${vars.map(v=>td(r[v])).join("")}${shown.map((c,i)=>td(c.f(r),hl&&i===k-1?"new":"")).join("")}</tr>`).join("")+`</table>`;
+}
+$("#pat2").innerHTML=tableHTML(["p","q"],[],0,false);
+$("#pat3").innerHTML=tableHTML(["p","q","r"],[],0,false);
+$("#pat4").innerHTML=tableHTML(["p","q","r","s"],[],0,false);
+
+[["Negation ¬p","T becomes F and F becomes T."],["Conjunction p ∧ q","True only when both are true."],["Disjunction p ∨ q","False only when both are false."],["Conditional p → q","False only when p is T and q is F."],["Biconditional p ↔ q","True when both have the same value."]].forEach(([t,d])=>$("#rules").appendChild(E("div",`<h3>${t}</h3><div>${d}</div>`)).className="card");
+
+
+// ---------- Order examples ----------
+const OX=[
+{e:"¬p ∧ q",w:"¬ comes before ∧, and it only touches p. So this is (¬p) ∧ q.",v:["p","q"],c:[["¬p",r=>!r.p],["¬p ∧ q",r=>!r.p&&r.q]]},
+{e:"¬(p ∧ q)",w:"The parentheses come first. Then ¬ negates the whole group.",v:["p","q"],c:[["p ∧ q",r=>r.p&&r.q],["¬(p ∧ q)",r=>!(r.p&&r.q)]]},
+{e:"¬¬p",w:"Double negation: negate once, then negate the result again.",v:["p"],c:[["¬p",r=>!r.p],["¬¬p",r=>!!r.p]]},
+{e:"p ∨ q ∧ r",w:"∧ comes before ∨. So this is p ∨ (q ∧ r).",v:["p","q","r"],c:[["q ∧ r",r=>r.q&&r.r],["p ∨ (q ∧ r)",r=>r.p||(r.q&&r.r)]]},
+{e:"p ∧ q ∨ r",w:"∧ comes before ∨. So this is (p ∧ q) ∨ r.",v:["p","q","r"],c:[["p ∧ q",r=>r.p&&r.q],["(p ∧ q) ∨ r",r=>(r.p&&r.q)||r.r]]},
+{e:"p ∧ q → r",w:"∧ comes before →. So this is (p ∧ q) → r.",v:["p","q","r"],c:[["p ∧ q",r=>r.p&&r.q],["(p ∧ q) → r",r=>!(r.p&&r.q)||r.r]]},
+{e:"p → q ∨ r",w:"∨ comes before →. So this is p → (q ∨ r).",v:["p","q","r"],c:[["q ∨ r",r=>r.q||r.r],["p → (q ∨ r)",r=>!r.p||(r.q||r.r)]]},
+{e:"p → q ↔ r",w:"→ comes before ↔. So this is (p → q) ↔ r.",v:["p","q","r"],c:[["p → q",r=>!r.p||r.q],["(p → q) ↔ r",r=>(!r.p||r.q)===r.r]]},
+{e:"p ∨ q ↔ ¬r",w:"¬ first, then ∨, then ↔. So this is (p ∨ q) ↔ (¬r).",v:["p","q","r"],c:[["¬r",r=>!r.r],["p ∨ q",r=>r.p||r.q],["(p ∨ q) ↔ ¬r",r=>(r.p||r.q)===!r.r]]},
+{e:"p ∧ (q ∨ ¬r)",w:"Inside the parentheses first: ¬r, then q ∨ ¬r. The ∧ comes last.",v:["p","q","r"],c:[["¬r",r=>!r.r],["q ∨ ¬r",r=>r.q||!r.r],["p ∧ (q ∨ ¬r)",r=>r.p&&(r.q||!r.r)]]},
+{e:"(p ∨ q) ∧ ¬(p ∧ q)",w:"Both groups in parentheses first. Then ¬ on the second group. The ∧ in the middle comes last.",v:["p","q"],c:[["p ∨ q",r=>r.p||r.q],["p ∧ q",r=>r.p&&r.q],["¬(p ∧ q)",r=>!(r.p&&r.q)],["(p ∨ q) ∧ ¬(p ∧ q)",r=>(r.p||r.q)&&!(r.p&&r.q)]]},
+{e:"¬(p ∨ q) → (¬p ∧ ¬q)",w:"Work the left side (p ∨ q, then its negation) and the right side (¬p, ¬q, then ∧). The → comes last.",v:["p","q"],c:[["p ∨ q",r=>r.p||r.q],["¬(p ∨ q)",r=>!(r.p||r.q)],["¬p",r=>!r.p],["¬q",r=>!r.q],["¬p ∧ ¬q",r=>!r.p&&!r.q],["¬(p ∨ q) → (¬p ∧ ¬q)",r=>(r.p||r.q)||(!r.p&&!r.q)]]},
+{e:"(p ∧ q) ∨ (r ∧ s)",w:"Four variables, so 16 rows. Do both parentheses first, then ∨.",v:["p","q","r","s"],c:[["p ∧ q",r=>r.p&&r.q],["r ∧ s",r=>r.r&&r.s],["(p ∧ q) ∨ (r ∧ s)",r=>(r.p&&r.q)||(r.r&&r.s)]]}
+].map(x=>({e:x.e,w:x.w,vars:x.v,cols:x.c.map(([h,f])=>({h,f}))}));
+OX.forEach(x=>{
+  const rs=rows(x.vars.length,x.vars),last=x.cols[x.cols.length-1],vals=rs.map(r=>last.f(r)),
+  kind=vals.every(Boolean)?"tautology (all T)":vals.every(v=>!v)?"contradiction (all F)":"contingency (mix of T and F)";
+  const d=E("div",`<div class="expr">${x.e}</div><p style="margin:6px 0">${x.w}</p><div><b>Solve in this order:</b></div><ol class="st">${x.cols.map(c=>`<li>${c.h}</li>`).join("")}</ol><div class="ans">Last column: <b>${vals.map(f).join(", ")}</b>. This is a <b>${kind}</b>.</div><div class="row" style="justify-content:flex-start"><button class="btn g">Show table</button></div><div class="sc" hidden></div>`);
+  d.className="card";
+  const b=d.querySelector("button"),t=d.querySelector(".sc");
+  b.onclick=()=>{if(t.hidden){t.innerHTML=tableHTML(x.vars,x.cols,x.cols.length,true);t.hidden=false;b.textContent="Hide table"}else{t.hidden=true;b.textContent="Show table"}};
+  $("#ord").appendChild(d);
+});
+
+// ---------- Worked problems ----------
+const P=[
+{t:"Problem 1",e:"p ∧ ¬p",vars:["p"],cols:[
+ {h:"¬p",f:r=>!r.p,n:"Negation flips p. Where p is T, ¬p is F, and where p is F, ¬p is T."},
+ {h:"p ∧ ¬p",f:r=>r.p&&!r.p,n:"A conjunction is true only when both parts are true. p and ¬p are never true together, so every row is F."}],
+ res:"<b>Result: F, F.</b> The column is all F, so p ∧ ¬p is a <b>contradiction</b>."},
+{t:"Problem 2",e:"(p → q) ↔ (¬q → ¬p)",vars:["p","q"],cols:[
+ {h:"¬p",f:r=>!r.p,n:"Negate p: F, F, T, T."},
+ {h:"¬q",f:r=>!r.q,n:"Negate q: F, T, F, T."},
+ {h:"p → q",f:r=>!r.p||r.q,n:"A conditional is false only when p is T and q is F. That happens in row 2 only: T, F, T, T."},
+ {h:"¬q → ¬p",f:r=>!(!r.q)||!r.p,n:"Use the ¬q and ¬p columns. It is false only when ¬q is T and ¬p is F. That is row 2 again: T, F, T, T."},
+ {h:"(p → q) ↔ (¬q → ¬p)",f:r=>(!r.p||r.q)===(r.q||!r.p),n:"A biconditional is true when both sides have the same value. The two columns match in every row, so every row is T."}],
+ res:"<b>Result: T, T, T, T.</b> The column is all T, so the statement is a <b>tautology</b>. This is because ¬q → ¬p is the contrapositive of p → q, and a conditional always has the same truth values as its contrapositive."},
+{t:"Problem 3",e:"(p ∨ ¬r) ∧ (q ∨ ¬p)",vars:["p","q","r"],cols:[
+ {h:"¬r",f:r=>!r.r,n:"Negate r: F, T, F, T, F, T, F, T."},
+ {h:"p ∨ ¬r",f:r=>r.p||!r.r,n:"A disjunction is false only when both parts are false. That happens in rows 5 and 7 (p is F and ¬r is F): T, T, T, T, F, T, F, T."},
+ {h:"¬p",f:r=>!r.p,n:"Negate p: F, F, F, F, T, T, T, T."},
+ {h:"q ∨ ¬p",f:r=>r.q||!r.p,n:"False only when q is F and ¬p is F. That happens in rows 3 and 4: T, T, F, F, T, T, T, T."},
+ {h:"(p ∨ ¬r) ∧ (q ∨ ¬p)",f:r=>(r.p||!r.r)&&(r.q||!r.p),n:"A conjunction is true only when both columns are T. Compare p ∨ ¬r with q ∨ ¬p row by row: T, T, F, F, F, T, F, T."}],
+ res:"<b>Result: T, T, F, F, F, T, F, T.</b> The column has both T and F, so the statement is a <b>contingency</b>."}
+];
+let pi=0,pk=0;
+P.forEach((p,i)=>{const b=document.createElement("button");b.className="btn g";b.textContent=p.t;b.onclick=()=>{pi=i;pk=0;pr()};b.dataset.i=i;$("#psel").append(b)});
+function pr(){
+  const p=P[pi],n=p.cols.length;
+  document.querySelectorAll("#psel button").forEach(b=>b.classList.toggle("on",+b.dataset.i===pi));
+  $("#pexpr").textContent=p.e;
+  $("#ptab").innerHTML=tableHTML(p.vars,p.cols,pk,true);
+  $("#pnote").innerHTML=pk===0?`<b>Start.</b> There ${p.vars.length===1?"is 1 variable":"are "+p.vars.length+" variables"}, so the table has <b>${2**p.vars.length} rows</b>. Fill the variable columns first.`:`<b>${p.cols[pk-1].h}:</b> ${p.cols[pk-1].n}`;
+  $("#pres").innerHTML=pk===n?`<div class="card">${p.res}</div>`:"";
+  $("#pp").disabled=pk===0;$("#pn").disabled=pk===n;
+}
+$("#pp").onclick=()=>{pk=Math.max(0,pk-1);pr()};
+$("#pn").onclick=()=>{pk=Math.min(P[pi].cols.length,pk+1);pr()};
+$("#pa").onclick=()=>{pk=P[pi].cols.length;pr()};
+pr();
+
+// ---------- Flashcards ----------
+const FC=[
+["How many rows does a truth table need for n variables?","2ⁿ rows. 1 variable: 2. 2 variables: 4. 3 variables: 8."],
+["How do you fill the columns for 3 variables?","p: 4 T then 4 F. q: 2 T, 2 F, 2 T, 2 F. r: T, F alternating."],
+["How do you fill the columns for 2 variables?","p: T, T, F, F. q: T, F, T, F."],
+["What do you do first when building the table?","Count the variables, then fill the variable columns. After that, add one column for each smaller part of the expression, from the inside out."],
+["Which part do you work out first in an expression?","Parentheses first. Inside them, negation first, then ∧ and ∨, then → and ↔."],
+["How do you fill the columns for 4 variables (16 rows)?","p: 8 T then 8 F. q: 4 T, 4 F, 4 T, 4 F. r: 2 T, 2 F repeated. s: T, F alternating."],
+["What is the order of solving, first to last?","Parentheses (innermost first), ¬, ∧, ∨, →, ↔."],
+["¬p ∧ q: what is negated?","Only p. It means (¬p) ∧ q. To negate the whole group, write ¬(p ∧ q)."],
+["How do you read p ∨ q ∧ r?","∧ comes first: p ∨ (q ∧ r)."],
+["How do you read p ∧ q → r?","∧ comes first: (p ∧ q) → r."],
+["Tautology","A proposition whose truth values are all T."],
+["Contradiction","A proposition whose truth values are all F."],
+["Contingency","A proposition whose truth values are a mix of T and F."],
+["Truth values of p ∧ ¬p","F, F. It is a contradiction, because p and ¬p are never both true."],
+["Truth values of (p → q) ↔ (¬q → ¬p)","T, T, T, T. It is a tautology."],
+["Why is (p → q) ↔ (¬q → ¬p) always true?","¬q → ¬p is the contrapositive of p → q. They always have the same truth value, so the biconditional is always true."],
+["Truth values of p → q (rows TT, TF, FT, FF)","T, F, T, T"],
+["Truth values of ¬q → ¬p (rows TT, TF, FT, FF)","T, F, T, T"],
+["Truth values of p ∨ ¬r (3 variables)","T, T, T, T, F, T, F, T"],
+["Truth values of q ∨ ¬p (3 variables)","T, T, F, F, T, T, T, T"],
+["Truth values of (p ∨ ¬r) ∧ (q ∨ ¬p)","T, T, F, F, F, T, F, T. It is a contingency."],
+["p ∧ q is true when…","Both p and q are true."],
+["p ∨ q is false when…","Both p and q are false."],
+["p → q is false when…","p is true and q is false."],
+["p ↔ q is true when…","p and q have the same truth value."]
+];
+let fi=0,fb=false,deck=[...FC];const fc=$("#fc");
+function sf(){fc.textContent=deck[fi][fb?1:0];fc.classList.toggle("back",fb);$("#fcn").textContent=`Card ${fi+1} of ${deck.length}`}
+fc.onclick=()=>{fb=!fb;sf()};$("#fn").onclick=()=>{fi=(fi+1)%deck.length;fb=false;sf()};$("#fp").onclick=()=>{fi=(fi-1+deck.length)%deck.length;fb=false;sf()};$("#fs").onclick=()=>{deck.sort(()=>Math.random()-.5);fi=0;fb=false;sf()};sf();
+
+// ---------- Quiz ----------
+// Each question: [question, [options], index of correct option, explanation]
+const Q=[
+["How many rows does a truth table need for 2 variables?",["4","2","3","8"],0,"Each variable has 2 values, so 2 × 2 = 4 rows."],
+["How many rows does a truth table need for 3 variables?",["8","6","9","4"],0,"2 × 2 × 2 = 8 rows."],
+["How many rows does a truth table need for 4 variables?",["16","8","12","10"],0,"2⁴ = 16 rows."],
+["How many rows does a table for n variables have?",["2ⁿ","2n","n²","n + 2"],0,"Each variable doubles the number of combinations, so the table has 2ⁿ rows."],
+["In a 3-variable table, how is the p column filled?",["4 T, then 4 F","T, F alternating","2 T, 2 F, 2 T, 2 F","All T"],0,"The first variable is T for the first half of the rows and F for the second half."],
+["In a 3-variable table, how is the q column filled?",["2 T, 2 F, 2 T, 2 F","4 T, then 4 F","T, F alternating","8 T"],0,"Each next variable uses blocks half as long as the one before it."],
+["In a 3-variable table, how is the r column filled?",["T, F alternating","4 T, then 4 F","2 T, 2 F, 2 T, 2 F","All F"],0,"The last variable alternates T, F, T, F."],
+["In a 4-variable table, how is the p column filled?",["8 T, then 8 F","4 T, 4 F, 4 T, 4 F","T, F alternating","2 T, 2 F repeated"],0,"The first variable is T for the first half (8 rows) and F for the second half."],
+["In a 4-variable table, how is the s column (the last variable) filled?",["T, F alternating","8 T, then 8 F","4 T, 4 F, 4 T, 4 F","All T"],0,"The last variable alternates T, F, T, F."],
+["Which is the correct order of solving, from first to last?",["Parentheses, ¬, ∧, ∨, →, ↔","¬, ∨, ∧, ↔, →, parentheses","∧, ∨, ¬, →, ↔, parentheses","Parentheses, →, ↔, ∧, ∨, ¬"],0,"Parentheses first, then negation, then ∧ and ∨, then → and ↔."],
+["In ¬p ∧ q, what does the ¬ apply to?",["Only p","Both p and q","Only q","The whole expression"],0,"¬ touches only what comes right after it. ¬p ∧ q means (¬p) ∧ q."],
+["Which is evaluated first in ¬(p ∧ q)?",["p ∧ q, inside the parentheses","¬","The whole expression at once","q"],0,"Parentheses come first, then the negation is applied to the result."],
+["Which part is evaluated first in p ∨ q ∧ r?",["q ∧ r","p ∨ q","¬","The ∨"],0,"∧ comes before ∨, so it reads p ∨ (q ∧ r)."],
+["Which part is evaluated first in p ∧ q → r?",["p ∧ q","q → r","The →","r"],0,"∧ comes before →, so it reads (p ∧ q) → r."],
+["Which part is evaluated first in p → q ∨ r?",["q ∨ r","p → q","The →","p"],0,"∨ comes before →, so it reads p → (q ∨ r)."],
+["Which connective is evaluated last in p → q ↔ r?",["↔","→","∧","¬"],0,"→ comes before ↔, so it reads (p → q) ↔ r and the ↔ is last."],
+["How many columns of work come before the final column in (p ∧ q) ∨ (r ∧ s), besides the 4 variable columns?",["2 (p ∧ q and r ∧ s)","1","3","4"],0,"Build p ∧ q and r ∧ s first. Then the final column is the ∨ of the two."],
+["When building a truth table, which columns should you add before the final column?",["One for each smaller part of the expression","Only the variable columns","Only the negations","None"],0,"Work from the inside out: negations, then the parts in parentheses, then the whole expression."],
+["Why is p ∧ ¬p false in every row?",["p and ¬p can never both be true","p is always false","¬p is always false","A conjunction is always false"],0,"A conjunction needs both parts true. p and ¬p always have opposite values."],
+["What are the truth values of p ∧ ¬p (p = T, then p = F)?",["F, F","T, F","F, T","T, T"],0,"T ∧ F = F and F ∧ T = F."],
+["A proposition whose truth values are all F is called a…",["Contradiction","Tautology","Contingency","Conditional"],0,"An always-false proposition is a contradiction."],
+["A proposition whose truth values are all T is called a…",["Tautology","Contradiction","Contingency","Converse"],0,"An always-true proposition is a tautology."],
+["A proposition with some T and some F in its last column is called a…",["Contingency","Tautology","Contradiction","Biconditional"],0,"A mix of T and F makes it a contingency."],
+["For rows TT, TF, FT, FF, what are the values of p → q?",["T, F, T, T","T, T, F, T","T, F, F, T","F, T, T, T"],0,"A conditional is false only when p is T and q is F, which is row 2."],
+["For rows TT, TF, FT, FF, what are the values of ¬q?",["F, T, F, T","T, F, T, F","F, F, T, T","T, T, F, F"],0,"q is T, F, T, F, so ¬q is F, T, F, T."],
+["For rows TT, TF, FT, FF, what are the values of ¬q → ¬p?",["T, F, T, T","T, T, F, T","F, T, T, T","T, F, F, F"],0,"¬q is F, T, F, T and ¬p is F, F, T, T. Only row 2 (T → F) is false."],
+["What are the truth values of (p → q) ↔ (¬q → ¬p)?",["T, T, T, T","T, F, T, T","T, F, F, T","F, F, F, F"],0,"Both sides are T, F, T, T, so they match in every row."],
+["(p → q) ↔ (¬q → ¬p) is a…",["Tautology","Contradiction","Contingency","Converse"],0,"Its last column is all T."],
+["Why is (p → q) ↔ (¬q → ¬p) always true?",["¬q → ¬p is the contrapositive of p → q","p → q is always true","¬q → ¬p is the converse of p → q","Because it has two variables"],0,"A conditional and its contrapositive always have the same truth value."],
+["When is a biconditional true?",["When both sides have the same truth value","When the first side is true","When the sides have different values","When both sides are false only"],0,"It is true when both sides are T or both are F."],
+["When is p ∨ ¬r false?",["p is F and r is T","p is T and r is T","p is F and r is F","p is T and r is F"],0,"It is false only when both parts are false: p is F and ¬r is F, so r is T."],
+["For rows 1 to 8 of the 3-variable table, what are the values of p ∨ ¬r?",["T, T, T, T, F, T, F, T","T, T, F, F, T, T, T, T","T, F, T, F, T, F, T, F","T, T, T, T, F, F, F, F"],0,"It is false only in rows 5 and 7, where p is F and r is T."],
+["For rows 1 to 8 of the 3-variable table, what are the values of q ∨ ¬p?",["T, T, F, F, T, T, T, T","T, T, T, T, F, T, F, T","F, F, T, T, F, F, T, T","T, F, T, F, T, F, T, F"],0,"It is false only in rows 3 and 4, where q is F and p is T."],
+["What are the truth values of (p ∨ ¬r) ∧ (q ∨ ¬p) for rows 1 to 8?",["T, T, F, F, F, T, F, T","T, T, T, T, F, T, F, T","T, T, F, F, T, T, T, T","T, F, F, F, F, T, F, T"],0,"It is T only when both p ∨ ¬r and q ∨ ¬p are T: rows 1, 2, 6 and 8."],
+["(p ∨ ¬r) ∧ (q ∨ ¬p) is a…",["Contingency","Tautology","Contradiction","Conditional"],0,"The last column has both T and F."],
+["p = T, q = F, r = T. What is (p ∨ ¬r) ∧ (q ∨ ¬p)?",["False","True","Undefined","Depends on the order"],0,"p ∨ ¬r = T ∨ F = T, but q ∨ ¬p = F ∨ F = F. T ∧ F = F."],
+["p = F, q = T, r = F. What is (p ∨ ¬r) ∧ (q ∨ ¬p)?",["True","False","Undefined","Depends on the order"],0,"p ∨ ¬r = F ∨ T = T and q ∨ ¬p = T ∨ T = T. T ∧ T = T."]
+];
+const sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const G=$("#gm");let qz;
+function qStart(list){
+  qz={q:sh(list).map(([t,o,c,e])=>{const r=o[c],n=sh(o);return{t,o:n,c:n.indexOf(r),e,src:[t,o,c,e]}}),i:0,ok:0,miss:[]};
+  qShow();
+}
+function qShow(){
+  const q=qz.q[qz.i],n=qz.q.length;
+  G.innerHTML=`<div class="hud"><span>Question ${qz.i+1} of ${n}</span><span id="qs">Score ${qz.ok}</span></div><div class="bar"><i style="width:${qz.i/n*100}%"></i></div><div class="card"><b id="qt"></b></div><div id="oc"></div><div id="fb"></div><div class="row"><button class="btn" id="nx" hidden></button></div>`;
+  $("#qt").textContent=q.t;
+  q.o.forEach((x,k)=>{const b=document.createElement("button");b.className="opt";b.textContent=x;b.onclick=()=>qAns(k);$("#oc").append(b)});
+  $("#nx").textContent=qz.i===n-1?"See results":"Next";
+  $("#nx").onclick=()=>{if(qz.i===n-1)qEnd();else{qz.i++;qShow();scrollTo(0,0)}};
+}
+function qAns(k){
+  const q=qz.q[qz.i];if(q.done)return;q.done=true;
+  const ok=k===q.c;
+  document.querySelectorAll("#oc .opt").forEach((b,i)=>{b.disabled=true;if(i===q.c)b.classList.add("ok");else if(i===k)b.classList.add("no")});
+  if(ok)qz.ok++;else qz.miss.push(q);
+  $("#qs").textContent="Score "+qz.ok;
+  $("#fb").innerHTML=`<div class="fb"><b>${ok?"Correct.":"Not quite."}</b> ${q.e}</div>`;
+  $("#nx").hidden=false;
+}
+function qEnd(){
+  const n=qz.q.length,p=Math.round(qz.ok/n*100),m=qz.miss;
+  G.innerHTML=`<div class="card c"><div class="big">${qz.ok} / ${n}</div><p>${p}%</p><div class="row"><button class="btn" id="qa">Retake quiz</button>${m.length?'<button class="btn g" id="qm">Retry missed</button>':''}</div></div>`+(m.length?`<h3 style="margin:18px 0 6px">Review your misses</h3>`+m.map(q=>`<div class="card"><b>${q.t}</b><div class="ans">Answer: <b>${q.o[q.c]}</b></div><div class="ans">${q.e}</div></div>`).join(""):`<div class="fb c">Perfect score. Nothing to review.</div>`);
+  $("#qa").onclick=()=>qStart(Q);
+  if(m.length)$("#qm").onclick=()=>qStart(m.map(q=>q.src));
+  scrollTo(0,0);
+}
+qStart(Q);
+</script>
+</body>
+</html>
