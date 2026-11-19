@@ -217,7 +217,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:0 16px 28px}
   function fc(h){var H=Math.floor(h),m=Math.round((h-H)*60);return (H%12||12)+":"+(m<10?"0":"")+m}
   function tc(c){var p=c.a>=12?"PM":"AM",q=c.b>=12?"PM":"AM";return fc(c.a)+"–"+fc(c.b)+"<br>"+(p===q?p:p+"–"+q)}
   var now=new Date(), today=(now.getDay()+6)%7, nowH=now.getHours()+now.getMinutes()/60;
-  var sel=today>5?0:today, mode=matchMedia("(max-width:640px)").matches?"day":"week";
+  var sel=today>5?0:today, mode="week";
   var cal=$("cal"),tb=$("tabs");
 
   var HS=7,HE=19,PH=64,HUES=[152,212,268,28,338,48,186,300,100,8];
